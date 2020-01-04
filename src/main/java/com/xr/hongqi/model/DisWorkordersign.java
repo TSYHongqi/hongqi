@@ -10,7 +10,7 @@ import java.util.Date;
  * dis_workordersign
  */
 @Data
-public class disWorkordersign implements Serializable {
+public class DisWorkordersign implements Serializable {
 
  private static final long serialVersionUID = -3322399989335331610L;
  private Integer id;//编号
