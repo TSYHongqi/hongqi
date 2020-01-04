@@ -10,7 +10,7 @@ import java.util.Date;
  * dis_dispatchhistory
  */
 @Data
-public class disDispatchhistory implements Serializable {
+public class DisDispatchhistory implements Serializable {
 
     private static final long serialVersionUID = 8255499766552043946L;
     private Integer id;//序号

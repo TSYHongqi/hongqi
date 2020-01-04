@@ -10,7 +10,7 @@ import java.util.Date;
  * biglog_logisticscontroltable
  */
 @Data
-public class biglogIogisticscontroltable implements Serializable {
+public class BiglogIogisticscontroltable implements Serializable {
 
     private static final long serialVersionUID = -4898496304244708570L;
     private Integer id;//录入人	外键，对应员工表员工ID
