@@ -1,0 +1,109 @@
+#配置服务器Tomcat
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: /
+  port: 8088
+
+#配置mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.xr.hongqi.model
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+#配置访问html
+spring:
+  resources:
+    static-locations: classpath:/static/
+  #thymeleaf模板引擎
+  thymeleaf:
+    prefix: classpath:/templates
+    suffix: .html
+    servlet:
+      content-type: text/html
+    enabled: true
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+
+  #配置redis
+  redis:
+    host: 47.96.144.120
+    port: 6379
+    # 密码 没有则可以不填
+    password: Family@1314
+    # 如果使用的jedis 则将lettuce改成jedis即可
+    database: 0
+    jedis:
+      pool:
+        # 最大活跃链接数 默认8
+        max-active: 1000
+        # 最大空闲连接数 默认8
+        max-idle: 32
+        # 最小空闲连接数 默认0
+        min-idle: 0
+
+
+
+  #mvc
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+    #设置静态文件路径，js,css等
+    static-path-pattern: /static/**
+
+
+
+
+
+
+  #数据源
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/quartz
+
+    #Druid连接池配置
+    druid:
+      initial-size: 5
+      max-active: 100
+      min-idle: 5
+      max-wait: 60000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      validation-query: SELECT 1 FROM DUAL
+      test-while-idle: true
+      test-on-borrow: true
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      filter:
+        stat:
+          merge-sql: true
+          slow-sql-millis: 5000
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        session-stat-enable: true
+        session-stat-max-count: 100
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: admin
+        login-password: admin
+        allow: 127.0.0.1
+
