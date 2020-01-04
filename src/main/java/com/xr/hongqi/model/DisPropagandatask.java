@@ -9,7 +9,7 @@ import java.util.Date;
  * dis_propagandatask
  */
 @Data
-public class disPropagandatask implements Serializable {
+public class DisPropagandatask implements Serializable {
 
     private static final long serialVersionUID = 2078006741847927890L;
     private Integer id;//编号
