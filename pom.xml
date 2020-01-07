@@ -8,7 +8,7 @@
         <version>2.2.2.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.xr</groupId>
+    <groupId>com.hongqi.springboot</groupId>
     <artifactId>hongqi</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>hongqi</name>
@@ -25,43 +25,15 @@
         </dependency>
 
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
-        <!--shiro权限-->
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-all</artifactId>
-            <version>1.4.2</version>
-            <!-- 排除掉里面的quartz包 -->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.opensymphony.quartz</groupId>
-                    <artifactId>quartz</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+
         <!-- springboot整合redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>3.0.1</version>
         </dependency>
 
         <!--分页start-->
@@ -147,15 +119,17 @@
             <artifactId>shiro-redis</artifactId>
             <version>2.4.2.1-RELEASE</version>
         </dependency>
-
-
-        <!-- 阿里巴巴fastjson -->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
         </dependency>
-
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.0.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -163,13 +137,13 @@
             <version>3.8.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.2</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+            <scope>provided</scope>
         </dependency>
-        <!--单元测试模块-->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -181,6 +155,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+
+
+
     </dependencies>
 
     <build>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hongqi.springboot.dao.LoginDao">
+
+    <!-- 根据用户名查找用户 -->
+    <select id="getEmpByEmpname" parameterType="java.lang.String" resultType="com.hongqi.springboot.model.SyEmp">
+		select * from sy_emp where EmpNo = #{empNo} and Disabled = 1
+	</select>
+
+    <!-- 查询用户所有角色 -->
+    <select id="listRoles" parameterType="java.lang.String" resultType="java.lang.String">
+		select * from sy_emp e INNER JOIN sy_role r on e.RoleID = r.id
+		where e.empNo=#{empNo} and e.Disabled=1 and r.Disabled=1
+	</select>
+
+    <!-- 查询用户所有权限,返回值是权限名集合 -->
+    <select id="listPermissions" parameterType="java.lang.String" resultType="java.lang.String">
+		select m.perms from sy_emp e INNER JOIN sy_role r on e.RoleID = r.id
+		INNER JOIN sy_rolesmenus rm on e.ID =rm.RoleID INNER JOIN sy_menus m
+		on m.ID =rm.MenuID and e.Disabled=1 and r.Disabled=1 and e.empNo=#{empNo}
+	</select>
+
+	<!--一级目录-->
+	<select id="getOneMenu" resultType="com.hongqi.springboot.model.SyMemus">
+        select * from sy_menus where parentid =0
+	</select>
+
+	<!--二级目录-->
+	<select id="getTowMenu" resultType="com.hongqi.springboot.model.SyMemus">
+        select * from sy_menus where parentid =#{id}
+	</select>
+
+	<!--三级目录-->
+	<select id="getThreeMenu" resultType="com.hongqi.springboot.model.SyMemus">
+        select * from sy_menus where parentid =#{id}
+	</select>
+
+
+
+</mapper>

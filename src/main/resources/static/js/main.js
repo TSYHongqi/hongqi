@@ -1,10 +1,10 @@
 var mainPlatform = {
 
 	init: function(){
-
 		this.bindEvent();
 		this._createTopMenu();
 	},
+
 
 	bindEvent: function(){
 		var self = this;
@@ -43,7 +43,7 @@ var mainPlatform = {
               icon: 4,
 			  title: '确定退出' //按钮
 			}, function(){
-			  location.href= 'login.html'; 
+			  location.href= 'login.html';
 			});
         });
         $(document).on('click', '.sider-nav-s li', function(e){
@@ -75,7 +75,7 @@ var mainPlatform = {
 	     $('#mm-tabcloseall').click(function(){
 	         $(".easyui-tabs1:visible").find('.tabs li').each(function(i,n){
 	             $(".easyui-tabs1:visible").tabs('close', $(n).text());
-	         });    
+	         });
 	     });
 	     //关闭除当前之外的TAB
 	     $('#mm-tabcloseother').click(function(){
@@ -83,17 +83,9 @@ var mainPlatform = {
 	         $('.tabs-inner span').each(function(i,n){
 	             if($(n).text() !== currtab_title)
 	                 $(".easyui-tabs1:visible").tabs('close',$(n).text());
-	         });    
+	         });
 	     });
 
-
-        // $(document).on('click', '.pf-modify-pwd', function() {
-        //     $('#pf-page').find('iframe').eq(0).attr('src', 'backend/modify_pwd.html')
-        // });
-
-        // $(document).on('click', '.pf-notice-item', function() {
-        //     $('#pf-page').find('iframe').eq(0).attr('src', 'backend/notice.html')
-        // });
 	},
 
 	// renderTopMenu
@@ -122,7 +114,7 @@ var mainPlatform = {
 		$('.pf-sider').hide();
 		this._createPageContainer(index);
 		if($('.pf-sider[arrindex='+ index +']').size() > 0) {
-			
+
 			$('.pf-sider[arrindex='+ index +']').show();
 			return false;
 		};
@@ -177,7 +169,7 @@ var mainPlatform = {
 
             menuStr += mstr;
 
-            
+
         }
         $('.pf-sider-wrap').append($('<div class="pf-sider" arrindex="'+ index +'"></div>').html(menuStr + '</ul>'));
 
