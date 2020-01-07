@@ -260,7 +260,7 @@ $(function(){
         }else{
             layer.msg("请选择需要删除的数据！")
         }
-		//页面层
+    })
 		/*layer.open({
 		  title: ['编辑', 'color:#fff;background:#1da02b;'],
 		  type: 2,
@@ -268,20 +268,19 @@ $(function(){
 		  area: ['650px', '300px'], //宽高
 		  content: 'deliveryStandard_update.html'
 		});*/
-	});
+//作废
+    $('#opDelete').click(function(){
+        //询问框
+        layer.confirm('确定是否作废？', {
+            btn: ['是','否'] //按钮
+        }, function(){
+            layer.msg('作废成功', {icon: 1});
+        }, function(){
+
+        });
+    })
 
 
-	//作废
-	$('#opDelete').click(function(){
-		//询问框
-		layer.confirm('确定是否作废？', {
-		  	btn: ['是','否'] //按钮
-		}, function(){
-		  	layer.msg('作废成功', {icon: 1});
-		}, function(){
-		  	
-		});
-	});
 
 });
 
