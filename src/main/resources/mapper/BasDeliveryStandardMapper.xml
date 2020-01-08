@@ -26,4 +26,6 @@
         InvalidateSign = #{invalidateSign},OperationTime = now() where id = #{id}
     </update>
 
+    <!---->
+
 </mapper>
