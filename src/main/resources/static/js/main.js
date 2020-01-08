@@ -15,6 +15,7 @@ var mainPlatform = {
 
             // 渲染对应侧边菜单
             var m = $(this).data('sort');
+
             self._createSiderMenu(SystemMenu[m], m);
         });
 

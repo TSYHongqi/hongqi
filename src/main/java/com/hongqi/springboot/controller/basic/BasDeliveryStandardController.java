@@ -17,10 +17,13 @@ import com.hongqi.springboot.model.BasDeliveryStandard;
 import com.hongqi.springboot.service.BasDeliveryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,21 +58,72 @@ public class BasDeliveryStandardController {
     }
 
 
-
+    /**
+     * 查找所有收派标准
+     * @param page
+     * @param limit
+     * @return
+     */
     @RequestMapping("/findDeliveryStandard")
     @ResponseBody
     public String findDeliveryStandard(@RequestParam(value="page",required=false) String page, @RequestParam(value="limit",required=false) String limit){
-        System.out.println(page+"================="+limit);
         PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
         List<BasDeliveryStandard> standards = basDeliveryStandardService.findStandards();
 
         PageInfo<BasDeliveryStandard> pageInfo = new PageInfo<BasDeliveryStandard>(standards);
         String jsonString = JSON.toJSONString(standards);
 
-        System.out.println("json================="+jsonString);
         String jso = "{\"code\":0,\"msg\": \"\",\"count\":" + pageInfo.getTotal() + ",\"data\":" + jsonString + "}";
         return jso;
     }
+
+    /**
+     * 跳转页面修改
+     * @param bid
+     * @return
+     */
+    @RequestMapping("/getUpdate/{bid}")
+    public String getUpdate(@PathVariable("bid") Integer bid, HttpSession session){
+        session.setAttribute("id",bid);
+        return "/pages/basicData/deliveryStandard_update";
+    }
+
+    @RequestMapping("/queryById/{id}")
+    @ResponseBody
+    public String queryById(@PathVariable("id") String id){
+        BasDeliveryStandard basDeliveryStandard = basDeliveryStandardService.queryById(Integer.parseInt(id));
+        String jsonString = JSON.toJSONString(basDeliveryStandard);
+        System.out.println("queryById"+jsonString);
+        return jsonString;
+    }
+    /**
+     * 修改用户
+     */
+    @RequestMapping("/update")
+    public String update(BasDeliveryStandard basDeliveryStandard){
+        System.out.println("basDeliveryStandard"+basDeliveryStandard);
+        basDeliveryStandardService.updateStandards(basDeliveryStandard);
+        return "/pages/basicData/deliveryStandard";
+    }
+
+
+    /**
+     * 作废标签
+     * @param employeesId
+     * @return
+     */
+    @RequestMapping("/ifDelAll/{employeesId}")
+    public String ifDelAll(@PathVariable("employeesId") String employeesId){
+        List<String> list = new ArrayList<>();
+        String[] strs = employeesId.split(",");
+        for (String str : strs) {
+            list.add(str);
+        }
+        basDeliveryStandardService.updateInvalidateSign(list);
+
+        return "/pages/basicData/deliveryStandard";
+    }
+
 
 
 

@@ -11,7 +11,9 @@
 package com.hongqi.springboot.dao;
 
 import com.hongqi.springboot.model.BasDeliveryStandard;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -32,4 +34,24 @@ public interface BasDeliveryStandardDao {
      */
     List<BasDeliveryStandard> findStandards();
 
+    /**
+     * 修改是否作废标签
+     */
+    void updateInvalidateSign(BasDeliveryStandard basDeliveryStandard);
+
+    /**
+     * 作废
+     * @param ids
+     */
+    void updateInvalidateSign(@Param("ids") List ids);
+
+    /**
+     * 根据id查询收派标准
+     */
+    BasDeliveryStandard queryById(@Param("id") Integer id);
+
+    /**
+     * 修改用户
+     */
+    void updateStandards(BasDeliveryStandard basDeliveryStandard);
 }

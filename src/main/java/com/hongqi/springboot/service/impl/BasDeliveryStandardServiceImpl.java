@@ -35,4 +35,19 @@ public class BasDeliveryStandardServiceImpl implements BasDeliveryStandardServic
     public List<BasDeliveryStandard> findStandards() {
         return basDeliveryStandardDao.findStandards();
     }
+
+    @Override
+    public void updateInvalidateSign(List ids) {
+       basDeliveryStandardDao.updateInvalidateSign(ids);
+    }
+
+    @Override
+    public BasDeliveryStandard queryById(Integer id) {
+        return basDeliveryStandardDao.queryById(id);
+    }
+
+    @Override
+    public void updateStandards(BasDeliveryStandard basDeliveryStandard) {
+        basDeliveryStandardDao.updateStandards(basDeliveryStandard);
+    }
 }

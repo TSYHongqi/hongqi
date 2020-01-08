@@ -4,7 +4,26 @@
 <mapper namespace="com.hongqi.springboot.dao.BasDeliveryStandardDao">
 
     <select id="findStandards" resultType="com.hongqi.springboot.model.BasDeliveryStandard">
-       select b.id,b.name,b.minweight,b.maxweight,b.operationtime,b.invalidateSign,e.empname,u.name as uname from BAS_DeliveryStandard b INNER JOIN sy_emp e on b.OperatorID = e.ID INNER JOIN sy_units u on b.OperationUnitID = u.ID
+       select b.id,b.name,b.minweight,b.maxweight,DATE_FORMAT(b.operationtime,'%Y-%m-%d %H:%i:%s') as operationtime,b.invalidateSign,e.empname,u.name as uname from BAS_DeliveryStandard b INNER JOIN sy_emp e on b.OperatorID = e.ID INNER JOIN sy_units u on b.OperationUnitID = u.ID
     </select>
+    <!--修改是否作废-->
+    <update id="updateInvalidateSign">
+        update BAS_DeliveryStandard set InvalidateSign = 1 where id in
+        <foreach item="ids" collection="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+	</update>
+    <!--根据id查询-->
+    <select id="queryById" parameterType="Integer" resultType="com.hongqi.springboot.model.BasDeliveryStandard">
+      select b.id,b.name,b.minweight,b.maxweight,DATE_FORMAT(b.operationtime,'%Y-%m-%d %H:%i:%s')
+      as operationtime,b.invalidateSign,e.empname,u.name as uname from BAS_DeliveryStandard b
+      INNER JOIN sy_emp e on b.OperatorID = e.ID INNER JOIN sy_units u on b.OperationUnitID = u.ID where b.id=#{id}
+    </select>
+
+    <!--修改收派标准-->
+    <update id="updateStandards" parameterType="com.hongqi.springboot.model.BasDeliveryStandard">
+        update BAS_DeliveryStandard set MinWeight = #{minWeight},MaxWeight = #{maxWeight},name=#{name},
+        InvalidateSign = #{invalidateSign},OperationTime = now() where id = #{id}
+    </update>
 
 </mapper>

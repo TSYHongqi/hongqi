@@ -21,20 +21,21 @@
 		on m.ID =rm.MenuID and e.Disabled=1 and r.Disabled=1 and e.empNo=#{empNo}
 	</select>
 
-	<!--一级目录-->
+	<!--一级目录，没有写全，应该还要传一个用户-->
 	<select id="getOneMenu" resultType="com.hongqi.springboot.model.SyMemus">
         select * from sy_menus where parentid =0
 	</select>
 
-	<!--二级目录-->
+	<!--二级目录，没有写全，应该还要传一个用户-->
 	<select id="getTowMenu" resultType="com.hongqi.springboot.model.SyMemus">
         select * from sy_menus where parentid =#{id}
 	</select>
 
-	<!--三级目录-->
+	<!--三级目录，没有写全，应该还要传一个用户-->
 	<select id="getThreeMenu" resultType="com.hongqi.springboot.model.SyMemus">
         select * from sy_menus where parentid =#{id}
 	</select>
+
 
 
 

@@ -11,7 +11,7 @@
 package com.hongqi.springboot.service;
 
 import com.hongqi.springboot.model.BasDeliveryStandard;
-import org.springframework.stereotype.Service;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +30,17 @@ public interface BasDeliveryStandardService {
      * @return
      */
     List<BasDeliveryStandard> findStandards();
+
+    /**
+     * 修改是否作废标签
+     */
+    void updateInvalidateSign(List ids);
+    /**
+     * 根据id查询收派标准
+     */
+    BasDeliveryStandard queryById(Integer id);
+    /**
+     * 修改用户
+     */
+    void updateStandards(BasDeliveryStandard basDeliveryStandard);
 }
