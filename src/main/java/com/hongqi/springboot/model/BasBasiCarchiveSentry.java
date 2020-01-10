@@ -1,5 +1,6 @@
 package com.hongqi.springboot.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,5 +16,14 @@ public class BasBasiCarchiveSentry implements Serializable {
     private String remarks;//备注
     private int operatorID;//操作人员
     private int operationUnitID;//操作单位
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date operationTime;//操作时间
+
+
+    /**
+     * 详细档案
+     */
+    private String empName; //操作人员
+    private String uname;//操作单位
+
 }

@@ -66,8 +66,11 @@ public class ShiroConfig {
         filterChainMap.put("/logout", "logout");
         //authc:所有url都必须认证通过才可以访问;
         // anon:所有url都都可以匿名访问，先配置anon再配置authc。
+        filterChainMap.put("/statics/**","anon");
         filterChainMap.put("/login", "anon");
-        filterChainMap.put("/**", "anon");
+        filterChainMap.put("/doLogin","anon");
+        filterChainMap.put("/**", "authc");
+
         //3.设置默认登录的URL.
         shiroFilterFactoryBean.setLoginUrl("/login");
         // 未授权界面;

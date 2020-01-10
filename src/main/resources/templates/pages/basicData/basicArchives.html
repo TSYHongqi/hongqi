@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>基础档案</title>
-<link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../../../static/css/page.css">
+<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="../../../statics/css/page.css">
 </head>
 <body>
 <!-- 外部整体 -->
@@ -22,7 +22,7 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">档案编号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入档案编号" autocomplete="off" class="layui-input">
+						<input type="text" id="id" name="id" placeholder="请输入档案编号" autocomplete="off" class="layui-input">
 				    </div>
 				    
 			    </div>
@@ -30,17 +30,17 @@
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >档案名称:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入档案名称" autocomplete="off" class="layui-input">
+				     	<input type="text" id="name" name="name" placeholder="请输入档案名称" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="submit"  lay-submit="" class="layui-btn btnQuery" lay-filter="sreach">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button type="reset" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -56,14 +56,14 @@
 			    <div class="layui-inline">
 				    <label class="layui-form-label">操作人:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入操作人" autocomplete="off" class="layui-input">
+				     	<input type="text" name="empName" id="empName" placeholder="请输入操作人" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >操作时间:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入操作时间" autocomplete="off" class="layui-input">
+				     	<input type="text" id="operationTime" name="operationTime" placeholder="请输入操作时间" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 			
@@ -79,136 +79,183 @@
 			</div>
 
 			<!-- 数据表格 -->
-			<table class="layui-table">
-				<colgroup>
-				    <col width="50">
-				    <col width="60">
-				    <col width="120">
-				    <col width="120">
-				    <col width="120">
-				    <col width="100">
-				    <col width="120">
-				    <col width="170">
-				    <col width="170">
-				    <col>
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>基本档案编号</th>
-				      	<th>基本档案名称</th>
-				      	<th>档案是否分级</th>
-					  	<th>操作人员</th>
-					  	<th>操作单位</th>
-					  	<th>操作时间</th>
-					  	<th>备注</th>
-					  	<th>操作</th>
-				    </tr> 
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery" id="btnList">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>BH001</td>
-				      	<td>档案名称</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				      	<th>
-							<button type="button" class="layui-btn layui-btn-small btnQuery">查看列表</button>
-					  	</th>
-				    </tr>
-			  	</tbody>
-			</table>
+			<div>
+			<table class="layui-table" id="user" lay-filter="tools"></table>
 		</div>
 		</form>
+
+		<script id="tools" type="text/html">
+			<a lay-event="query" class="layui-btn layui-btn-small btnQuery" id="btnList">查看列表</a>
+		</script>
 	</div>
 </div>
-<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../../static/layui/layui.js"></script>
-<script type="text/javascript">     
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-   
-});
 
-//加载'table'模块
-layui.use('table', function(){
-  var table = layui.table;
-});
+<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
+<script type="text/javascript">
+    //加载'form'模块，使checkbox、select、radio初始化
+    var table;
+    var layer;
+    var form;
+    var laydate;
+    layui.use(['layer','table','element','form','laydate'],function () {
+        $ = layui.jquery;
+        table = layui.table;
+        layer = layui.layer;
+        form = layui.form;
+        laydate = layui.laydate;
+        // 执行一个 table 实例
+        table.render({
+            id:'alltable',
+            elem : '#user',
+            height: 480,
+            page:true,
+			size:'lg',
+            cellMinWidth: 100,
+            limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+            limit: 10, //每页默认显示的数量
+            url : '/findAll',
+            cols : [ [ // 表头
+                {
+                    type:'checkbox'
+                },  {
+                    field : 'id',
+                    title : '序号',
+                    width : 60,
+                    sort: true
+                }, {
+                    field : 'id',
+                    title : '基本档案编号',
+                    width : 120
+                }, {
+                    field : 'name',
+                    title : '基本档案名称',
+                    width : 120
+                }, {
+                    field : 'grade',
+                    title : '档案是否分级',
+                    width : 120,
+                    templet : function(d) {
+                        if (d.grade == 1) {
+                            return '是';
+                        } else if (d.grade == 0) {
+                            return '否';
+                        }
+                    }
+                }, {
+                    field : 'empName',
+                    title : '操作人员',
+                    width : 100
+
+                }, {
+                    field : 'uname',
+                    title : '操作单位',
+                    width : 120
+                }, {
+                    field : 'operationTime',
+                    title : '操作时间',
+                    width : 170,
+                    sort: true
+                } , {
+                    field : 'remarks',
+                    title : '备注',
+                    width : 170,
+                }, {
+                    title : '操作',
+                    width : 180,
+                    align : 'left',
+                    toolbar : '#tools'
+                }] ]
+        });
+         //监听行工具事件
+        table.on('tool(tools)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'query'){
+                // EditLay('修改','',data.id,600,600);
+                layer.open({
+                    title: ['列表', 'color:#fff;background:#1da02b;'],
+                    type: 2,
+                    //skin: 'layui-layer-rim', //加上边框
+                    area: ['980px', '440px'], //宽高
+                    content: '/basicArchivesList/'+data.id+''
+                });
+            }
+        });
+
+        //监听提交
+        form.on('submit(sreach)', function(data){
+            var id = $("#id").val();
+            var name=$("#name").val();
+            var empName = $("#empName").val();
+            var operationTime = $("#operationTime").val();
+            table.reload('alltable', {page:{curr:1},url: '/findAll' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                ,totalRow: true //开启合计行
+                ,cols : [ [ // 表头
+                    {
+                        type:'checkbox'
+                    },  {
+                        field : 'id',
+                        title : '序号',
+                        width : 70,
+                        sort: true
+                    }, {
+                        field : 'id',
+                        title : '基本档案编号',
+                        width : 110
+                    }, {
+                        field : 'name',
+                        title : '基本档案名称',
+                        width : 120
+                    }, {
+                        field : 'grade',
+                        title : '档案是否分级',
+                        width : 120,
+                        templet : function(d) {
+                            if (d.grade == 1) {
+                                return '是';
+                            } else if (d.grade == 0) {
+                                return '否';
+                            }
+                        }
+                    }, {
+                        field : 'empName',
+                        title : '操作人员',
+                        width : 100
+
+                    }, {
+                        field : 'uname',
+                        title : '操作单位',
+                        width : 120
+                    }, {
+                        field : 'operationTime',
+                        title : '操作时间',
+                        width : 170,
+                        sort: true
+                    } , {
+                        field : 'remarks',
+                        title : '备注',
+                        width : 170,
+                    }, {
+                        title : '操作',
+                        width : 200,
+                        align : 'left',
+                        toolbar : '#tools'
+                    }] ]
+                , where:{"name":name,"id":id,"empName":empName,
+                   "operationTime":operationTime}});
+            return false;
+        });
+
+        //日期
+        var operationTime= laydate.render({
+            elem: '#operationTime'
+        });
+
+
+
+
+    });
 
 $(function(){
 	//显示、隐藏剩余的查询条件

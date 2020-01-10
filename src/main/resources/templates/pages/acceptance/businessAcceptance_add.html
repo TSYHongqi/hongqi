@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>管理分区</title>
-    <link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
 	<form class="layui-form">
@@ -13,25 +13,25 @@
 		    <tr>
 		    	<td class="layui-bg-gray" width="13%">业务通知单号</td>
 		      	<td width="22%">
-      			     <input type="text" name="title" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input" value="YWD1001" disabled>
+      			     <input type="text" name="businessNoticeNo" id="businessNoticeNo" lay-verify="required" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input" value="YWD1001" disabled>
 		      	</td>
 		      	<td class="layui-bg-gray" width="10%">客户编号</td>
 		      	<td width="22%">
-					         <input type="text" name="title" placeholder="请输入客户编号" autocomplete="off" class="layui-input" value="">
+					     <input type="text" name="customCode" id="customCode" lay-verify="required" placeholder="请输入客户编号" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray" width="10%">客户名称</td>
 		      	<td width="22%">
-					         <input type="text" name="title" placeholder="请输入客户名称" autocomplete="off" class="layui-input" value="">
+					     <input type="text" name="customName" id="customName" lay-verify="required" placeholder="请输入客户名称" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">联系人</td>
 		      	<td>
-					         <input type="text" name="title" placeholder="请输入联系人" autocomplete="off" class="layui-input" value="">
+					         <input type="text" name="linkman" id="linkman" lay-verify="required" placeholder="请输入联系人" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray">电话</td>
 		      	<td>
-  					       <input type="text" name="title" placeholder="请输入电话" autocomplete="off" class="layui-input" value="">
+  					       <input type="text" name="telPhone" id="telPhone" lay-verify="required|phone" placeholder="请输入电话" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray"></td>
 		      	<td>
@@ -41,72 +41,107 @@
 		    <tr>
 		        <td class="layui-bg-gray">取件地址</td>
     	      <td colspan="5">
-		              <input type="text" name="title" placeholder="请输入取件地址" autocomplete="off" class="layui-input" value="">
+		              <input type="text" name="pickupAddress" id="pickupAddress" lay-verify="required" placeholder="请输入取件地址" autocomplete="off" class="layui-input" value="">
             </td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">取件城市</td>
 		      	<td>
-					       <input type="text" name="title" placeholder="请输入取件城市" autocomplete="off" class="layui-input" value="">
+					  <input type="text" name="pickupCity" id="pickupCity" lay-verify="required" placeholder="请输入取件城市" autocomplete="off" class="layui-input" value="">
 		      	</td>
-		      	<td class="layui-bg-gray">到达城市</td>
+		      	<td class="layui-bg-gray">件数</td>
 		      	<td>
-					       <input type="text" name="title" placeholder="请输入到达城市" autocomplete="off" class="layui-input" value="">
+					 <input type="text" name="packagesNum" id="packagesNum" lay-verify="required|number" placeholder="请输入到达城市" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray">产品</td>
 		      	<td>
               <select name="pro" lay-verify="required">
                 <option value=""></option>
-                <option value="0">手机</option>
-                <option value="1">电脑</option>
-                <option value="2">电脑</option>
-                <option value="3">电脑</option>
-                <option value="4">电脑</option>
+                <option value="0">日用百货</option>
+                <option value="1">服饰箱包</option>
+                <option value="2">护肤彩妆</option>
+                <option value="3">珠宝配饰</option>
+                <option value="4">家居装饰</option>
               </select>
 		      	</td>
 		    </tr>
         <tr>
 		      	<td class="layui-bg-gray">预约取件时间</td>
 		      	<td>
-					       <input type="text" name="title" placeholder="请输入预约取件时间" autocomplete="off" class="layui-input" value="">
+					   <input type="text" lay-verify="required" name="reservationTime" id="reservationTime" placeholder="请输入预约取件时间" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray">品名</td>
 		      	<td>
-					       <input type="text" name="title" placeholder="请输入品名" autocomplete="off" class="layui-input" value="">
+					   <input type="text" lay-verify="required" name="production" id="production" placeholder="请输入品名" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray">重量</td>
 		      	<td>
-              <input type="text" name="title" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
+              <input type="text" name="weight" id="weight" lay-verify="required" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		    </tr>
         <tr>
 		      	<td class="layui-bg-gray">体积</td>
-            <td>
-              <input type="text" name="title" placeholder="请输入体积" autocomplete="off" class="layui-input" value="">
+                <td>
+                   <input type="text" name="volume" id="volume" lay-verify="required" placeholder="请输入体积" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		      	<td class="layui-bg-gray">备注</td>
 		      	<td colspan="4">
-					       <input type="text" name="title" placeholder="请输入备注" autocomplete="off" class="layui-input" value="">
+					<input type="text" name="importantHints" id="importantHints" lay-verify="required" placeholder="请输入备注" autocomplete="off" class="layui-input" value="">
 		      	</td>
 		    </tr>
 
 		    <tr>
 		      	<td colspan="6">
-					     <button class="layui-btn" style="background: #1da02b;">确定</button>
-					     <button type="button" class="layui-btn layui-btn-primary">取消</button>
+					<button class="layui-btn" style="background: #1da02b;" lay-filter="add" lay-submit="">确定</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
 		      	</td>
 		    </tr>
 	  	</tbody>
 	</table>
 	</form>
-	<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 	<script type="text/javascript">
-
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
-
+        //返回
+        $("#closePage").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
         });
+
+        layui.use(['form', 'layedit','layer'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer;
+            //监听提交
+            form.on('submit(add)', function(data){
+                layer.alert("新增成功！", {icon: 6},function () {
+                    // 获得frame索引
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.location.reload(); //刷新父页面
+                    //关闭当前frame
+                    parent.layer.close(index);
+                    $(".layui-form").submit();
+                });
+                return false;
+            });
+
+
+            //创建一个编辑器
+            var editIndex = layedit.build('LAY_demo_editor');
+
+            //自定义验证规则
+            form.verify({
+                volume: [
+                    /^\d+\.\d+$/
+                    ,'只能输入小数'
+                ]
+                ,content: function(value){
+                    layedit.sync(editIndex);
+                }
+            });
+        });
+
+
 
     </script>
 </body>

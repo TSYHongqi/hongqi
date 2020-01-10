@@ -23,7 +23,7 @@ pagehelper:
 #配置访问html
 spring:
   resources:
-    static-locations: classpath:/static/
+    static-locations: classpath:/statics/
   #thymeleaf模板引擎
   thymeleaf:
     prefix: classpath:/templates
@@ -60,7 +60,7 @@ spring:
       prefix: /
       suffix: .html
     #设置静态文件路径，js,css等
-    static-path-pattern: /static/**
+    static-path-pattern: /statics/**
 
 
 

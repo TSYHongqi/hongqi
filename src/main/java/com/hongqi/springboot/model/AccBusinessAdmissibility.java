@@ -1,5 +1,6 @@
 package com.hongqi.springboot.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,8 +8,9 @@ import java.util.Date;
 @Data
 public class AccBusinessAdmissibility implements Serializable {
     private static final long serialVersionUID = -6649628507626348761L;
-    private Integer iD;//编号
+    private Integer id;//编号
     private String businessNoticeNo;//业务通知单号
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date reservationTime;//预约收件时间
     private String customName;//客户名称
     private String pickupAddress;//取件地址
@@ -29,6 +31,13 @@ public class AccBusinessAdmissibility implements Serializable {
     private double actualWeight;//计费重量
     private double packingFee;//包装费
     private int actualPacking;//实际包装 1.木箱、2.纸箱
+
+    /**
+     * 新加
+     */
+    private String production; //产品
+    private String pickupCity; //取件城市，从地址中解析出来
+
 
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hongqi.springboot.dao.basic.BasBasicArchivesDao">
+    <!--查询-->
+    <select id="findAll" resultType="com.hongqi.springboot.model.BasBasiCarchives">
+        select b.ID,b.Name,b.Grade,b.Remarks,b.OperatorID,b.OperationUnitID,b.OperationTime,u.Name as uname,e.EmpName
+        from BAS_BasicArchives b INNER JOIN sy_emp e on b.OperatorID = e.ID INNER JOIN sy_units u on b.OperationUnitID = u.ID
+        where 1 = 1
+        <if test="name != null and name!=''">
+            AND b.Name like "%"#{name}"%"
+        </if>
+        <if test="empName != null and empName!=''">
+            AND e.EmpName like "%"#{empName}"%"
+        </if>
+        <if test="id != 0">
+            AND b.id = #{id}
+        </if>
+        <if test="operationTime != null and operationTime!=''">
+            AND to_days(b.operationTime) =to_days(#{operationTime})
+        </if>
+    </select>
+
+    <!--查询所有档案详情-->
+    <select id="findAllList" resultType="com.hongqi.springboot.model.BasBasiCarchiveSentry">
+        select e.id,e.name,e.ParentID,e.avaliable,u.name as uname,se.EmpName,e.OperationTime,e.Remarks from
+        BAS_BasicArchivesEntry e INNER JOIN BAS_BasicArchives b on e.ParentID = b.ID
+        INNER JOIN sy_emp se on b.OperatorID = se.id INNER JOIN sy_units u on b.OperationUnitID
+        = u.id WHERE e.ParentID = #{id}
+    </select>
+
+
+
+
+
+</mapper>

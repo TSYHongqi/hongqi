@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hongqi.springboot.dao.acceptance.BusinessAcceptanceDao">
+
+    <select id="findBusinessAcceptance" resultType="com.hongqi.springboot.model.AccBusinessAdmissibility">
+        select * from acc_businessadmissibility where 1 = 1
+        <if test="businessNoticeNo != null and businessNoticeNo!=''">
+            AND businessNoticeNo like "%"#{businessNoticeNo}"%"
+        </if>
+        <if test="customCode != null and customCode!=''">
+            AND customCode like "%"#{customCode}"%"
+        </if>
+    </select>
+
+</mapper>

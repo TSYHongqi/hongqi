@@ -8,11 +8,11 @@
  * <author>     <time>       <version>     <desc>
  * 作者姓名    修改时间     版本号       描述
  */
-package com.hongqi.springboot.service.impl;
+package com.hongqi.springboot.service.impl.basic;
 
-import com.hongqi.springboot.dao.BasDeliveryStandardDao;
+import com.hongqi.springboot.dao.basic.BasDeliveryStandardDao;
 import com.hongqi.springboot.model.BasDeliveryStandard;
-import com.hongqi.springboot.service.BasDeliveryStandardService;
+import com.hongqi.springboot.service.basic.BasDeliveryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +32,8 @@ public class BasDeliveryStandardServiceImpl implements BasDeliveryStandardServic
     @Autowired
     private BasDeliveryStandardDao basDeliveryStandardDao;
 
-    public List<BasDeliveryStandard> findStandards() {
-        return basDeliveryStandardDao.findStandards();
+    public List<BasDeliveryStandard> findStandards(BasDeliveryStandard basDeliveryStandard) {
+        return basDeliveryStandardDao.findStandards(basDeliveryStandard);
     }
 
     @Override
@@ -49,5 +49,15 @@ public class BasDeliveryStandardServiceImpl implements BasDeliveryStandardServic
     @Override
     public void updateStandards(BasDeliveryStandard basDeliveryStandard) {
         basDeliveryStandardDao.updateStandards(basDeliveryStandard);
+    }
+
+    @Override
+    public void addStandards(BasDeliveryStandard basDeliveryStandard) {
+        basDeliveryStandardDao.addStandards(basDeliveryStandard);
+    }
+
+    @Override
+    public List<BasDeliveryStandard> addBind(String empNo) {
+        return basDeliveryStandardDao.addBind(empNo);
     }
 }

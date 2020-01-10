@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>基础档案</title>
-<link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../../../static/css/page.css">
+
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="../../../statics/css/page.css">
 </head>
 <body>
 <!-- 外部整体 -->
@@ -15,7 +16,7 @@
 		<div class="layui-inline">
 			<button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailAdd">新增详细信息</button>
 			<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-			<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">作废</button>
+			<button type="button" class="layui-btn layui-btn-small btnOther" id="a">作废</button>
 		</div>
 	</div>
 
@@ -24,130 +25,97 @@
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
 		<form class="layui-form" action="">
-			
 
+	<div>
 			<!-- 数据表格 -->
-			<table class="layui-table">
-				<colgroup>
-				    <col width="50">
-				    <col width="60">
-				    <col width="120">
-				    <col width="90">
-				    <col width="90">
-				    <col width="100">
-				    <col width="100">
-				    <col width="170">
-				    <col>
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      	<th>档案名称</th>
-				      	<th>上级编码</th>
-				      	<th>封存标志</th>
-					  	<th>操作人员</th>
-					  	<th>操作单位</th>
-					  	<th>操作时间</th>
-					  	<th>备注</th>
-				    </tr> 
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>5</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>6</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>7</td>
-				      	<td>档案名称</td>
-				      	<td>BH001</td>
-				      	<td>否</td>
-				      	<td>张三</td>
-				      	<td>总公司</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>档案备注信息</td>
-				    </tr>
-			  	</tbody>
+			<table class="layui-table" id="user">
+
 			</table>
 		</div>
 		</form>
 	</div>
 </div>
-<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../../static/layui/layui.js"></script>
-<script type="text/javascript">     
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
-   
-});
+<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
+<script type="text/javascript">
+    //加载'form'模块，使checkbox、select、radio初始化
+    var table;
+    var layer;
+    var form;
+    var laydate;
+    layui.use(['layer','table','element','form','laydate'],function () {
+        $ = layui.jquery;
+        table = layui.table;
+        layer = layui.layer;
+        form = layui.form;
+        laydate = layui.laydate;
+        // 执行一个 table 实例
+        table.render({
+            id:'alltable',
+            elem : '#user',
+            height: 480,
+            page:true,
+            cellMinWidth: 100,
+            limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+            limit: 10, //每页默认显示的数量
+            url : '/findAllList',
+            cols : [ [ // 表头
+                {
+                    type:'checkbox'
+                },  {
+                    field : 'id',
+                    title : '序号',
+                    width : 88,
+                    sort: true
+                }, {
+                    field : 'name',
+                    title : '档案名称',
+                    width : 88
+                }, {
+                    field : 'parentID',
+                    title : '上级编码',
+                    width : 88
+                }, {
+                    field : 'avaliable',
+                    title : '封存标志',
+                    width : 88,
+                    templet : function(d) {
+                        if (d.avaliable == 1) {
+                            return '是';
+                        } else if (d.avaliable == 0) {
+                            return '否';
+                        }
+                    }
+                }, {
+                    field : 'empName',
+                    title : '操作人员',
+                    width : 100
 
-//加载'table'模块
-layui.use('table', function(){
-  var table = layui.table;
-});
+                }, {
+                    field : 'uname',
+                    title : '操作单位',
+                    width : 100
+                }, {
+                    field : 'operationTime',
+                    title : '操作时间',
+                    width : 169,
+                    sort: true
+                } , {
+                    field : 'remarks',
+                    title : '备注',
+                    width : 200
+                }] ]
+        });
+
+        //日期
+        var operationTime= laydate.render({
+            elem: '#operationTime'
+        });
+
+
+
+
+    });
 
 $(function(){
 

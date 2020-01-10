@@ -58,6 +58,7 @@ public class LoginController {
         //得到Subject,通过SecurityUtils得到Subject，其会自动绑定到当前线程；如果在web环境在请求结束时需要解除绑定
         Subject subject = SecurityUtils.getSubject();
         //创建用户名/密码身份验证Token（即用户身份/凭证）
+        System.out.println(emp.getEmpNo()+","+emp.getPwd());
         UsernamePasswordToken token = new UsernamePasswordToken(emp.getEmpNo(), emp.getPwd());
         token.setRememberMe(emp.isRememberMe());
         try {

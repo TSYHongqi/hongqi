@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>收派标准</title>
-<link rel="stylesheet" type="text/css" href="../../../static/newlayui/layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../../../static/css/page.css">
+<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="../../../statics/css/page.css">
 </head>
 <body>
 <!-- 外部整体 -->
@@ -29,8 +29,8 @@
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >作废标志:</label>
-					<div class="layui-input-block" style="width: 150px;" name="invalidateSign" id="invalidateSign" >
-						<select name="city" lay-verify="required">
+					<div class="layui-input-block" style="width: 150px;">
+						<select name="invalidateSign" id="invalidateSign" >
 							<option value=""></option>
 							<option value="1">是</option>
 							<option value="0">否</option>
@@ -40,11 +40,11 @@
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery" lay-filter="sreach">
+					<button type="submit"  lay-submit="" class="layui-btn btnQuery" lay-filter="sreach">
 						<i class="layui-icon">&#xe615;</i> 查询
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button type="reset" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -103,17 +103,17 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../../static/layer/layer.js"></script>
-<script type="text/javascript" src="../../../static/newlayui/layui/layui.js"></script>
+<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../../statics/layer/layer.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 <script type="text/javascript">
 //加载'form'模块，使checkbox、select、radio初始化
 var table;
 var layer;
 var form;
 var laydate;
-layui.use(['layer','table','element','form','laydate'],function () {/*
-    $ = layui.jquery;*/
+layui.use(['layer','table','element','form','laydate'],function () {
+    $ = layui.jquery;
     table = layui.table;
     layer = layui.layer;
     form = layui.form;
@@ -182,7 +182,10 @@ layui.use(['layer','table','element','form','laydate'],function () {/*
          var name=$("#name").val();
          var minWeight=$("#minWeight").val();
          var maxWeight=$("#maxWeight").val();
-         table.reload('alltable', {page:{curr:1},url: '/queryByAll' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+         var empName = $("#empName").val();
+         var invalidateSign = $("#invalidateSign").val();
+         var operationTime = $("#operationTime").val();
+        table.reload('alltable', {page:{curr:1},url: '/findDeliveryStandard' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
              ,totalRow: true //开启合计行
              ,cols : [ [ // 表头
                  {
@@ -232,7 +235,8 @@ layui.use(['layer','table','element','form','laydate'],function () {/*
                      sort: true,
                      fixed: 'right'
                  } ] ]
-             , where:{"name":name,"minWeight":minWeight,"maxWeight":maxWeight}});
+             , where:{"name":name,"minWeight":minWeight,"maxWeight":maxWeight,"empName":empName,
+				"invalidateSign":invalidateSign,"operationTime":operationTime}});
          return false;
      });
 
@@ -259,7 +263,7 @@ $(function(){
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
 		  area: ['650px', '300px'], //宽高
-		  content: 'deliveryStandard_add.html'
+		  content: '/addHtml'
 		});
 	});
 

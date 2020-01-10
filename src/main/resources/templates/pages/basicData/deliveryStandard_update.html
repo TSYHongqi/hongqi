@@ -4,7 +4,7 @@
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <title>收派标准</title>
-	<link rel="stylesheet" type="text/css" href="../../../static/newlayui/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head> 
 <body><!--action="/update"-->
 	<form class="layui-form" action="/update"  type="post">
@@ -14,7 +14,7 @@
 		    	<td class="layui-bg-gray" width="15%">标准名称</td>
 		      	<td width="35%">
 					<input type='hidden' lay-verify="id" name='id' th:value="${session.id}" id="id"/>
-					<input type="text"id="name" name="name" placeholder="请输入收派标准名称" autocomplete="off" class="layui-input" >
+					<input type="text" id="name"  lay-verify="required" name="name" placeholder="请输入收派标准名称" autocomplete="off" class="layui-input" >
 		      	</td>
 		      	<td class="layui-bg-gray" width="15%">作废标志</td>
 		      	<td width="35%">
@@ -25,11 +25,11 @@
 		    <tr>
 		      	<td class="layui-bg-gray">最小重量</td>
 		      	<td>
-					<input type="text" name="minWeight" id="minWeight" placeholder="请输入最小重量" autocomplete="off" class="layui-input" >
+					<input type="text" lay-verify="required" name="minWeight" id="minWeight" placeholder="请输入最小重量" autocomplete="off" class="layui-input" >
 		      	</td>
 		      	<td class="layui-bg-gray">最大重量</td>
 		      	<td>
-					<input type="text" name="maxWeight" id="maxWeight" placeholder="请输入最大重量" autocomplete="off" class="layui-input" >
+					<input type="text" lay-verify="required" name="maxWeight" id="maxWeight" placeholder="请输入最大重量" autocomplete="off" class="layui-input" >
 		      	</td>
 		    </tr>
 		    <tr>
@@ -54,9 +54,9 @@
 	  	</tbody>
 	</table>
 	</form>
-	<script type="text/javascript" src="../../../static/layer/layer.js"></script>
-	<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../static/newlayui/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../statics/layer/layer.js"></script>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 	<script type="text/javascript">
         //返回
         $("#closePage").click(function(){
