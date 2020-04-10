@@ -1,64 +1,105 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head> 
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <title>基础档案</title> 
-    <link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
+    <title>基础档案</title>
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head> 
 <body>
-	<form class="layui-form">
+	<form class="layui-form" action="/addBasicArch" method="post">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
 		    	<td class="layui-bg-gray" width="15%">档案名称</td>
 		      	<td width="35%">
-      				<input type="text" name="title" placeholder="请输入基本档案名称" autocomplete="off" class="layui-input">
+      				<input type="text" lay-verify="required" name="name" placeholder="请输入基本档案名称" autocomplete="off" class="layui-input">
 		      	</td>
 		      	<td class="layui-bg-gray" width="15%">是否分级</td>
 		      	<td width="35%">
-					<input type="radio" name="del" value="1" title="是">
-					<input type="radio" name="del" value="0" title="否" checked>
+					<input type="radio" name="grade" id="1" value="1" title="是">
+					<input type="radio" name="grade" id="0" value="0" title="否" checked>
 		      	</td>
 		    </tr>
-		    <tr>
-		      	<td class="layui-bg-gray">操作人员</td>
-		      	<td>张三</td>
-		      	<td class="layui-bg-gray">操作单位</td>
-		      	<td>总公司</td>
-		    </tr>
 			<tr>
+				<td class="layui-bg-gray">操作人员</td>
+				<td th:text="${session.ename}"></td>
+				<td class="layui-bg-gray">操作单位</td>
+				<td th:text="${session.uname}"></td>
+			</tr>
+			<!--<tr>
 		      	<td class="layui-bg-gray">操作时间</td>
-		      	<td> 2017-10-23 16:17:10 </td>
+		      	<td th:text="${session.ename}"> </td>
 		      	<td class="layui-bg-gray"></td>
 		      	<td></td>
-		    </tr>
+		    </tr>-->
 		    <tr>
 		      	<td class="layui-bg-gray">备注</td>
-		      	<td colspan="3"> 
-					
-					<textarea name="desc" placeholder="请输入备注信息" class="layui-textarea"></textarea>
+		      	<td colspan="3">
+					<textarea name="remarks" placeholder="请输入备注信息" class="layui-textarea" lay-verify="required"></textarea>
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td colspan="4">
-					<button class="layui-btn" style="background: #1da02b;">确定</button>
-					<button type="button" class="layui-btn layui-btn-primary">取消</button>
+					<button class="layui-btn" style="background: #1da02b;" lay-filter="add" lay-submit="">确定</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
 		      	</td>
 		    </tr>
 	  	</tbody>
 	</table>
 	</form>
-	<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 	<script type="text/javascript">
-        
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
-           
+        //返回
+        $("#closePage").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
         });
-      
-    </script>
+
+        layui.use(['form', 'layedit','layer'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer
+            /* form.on("radio(invalidateSign)", function (data) {
+                 var ins = data.value;
+                 alert(ins);
+             });*/
+
+            //监听提交
+            form.on('submit(add)', function(data){
+                layer.alert("新增成功！", {icon: 6},function () {
+                    // 获得frame索引
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.location.reload(); //刷新父页面
+                    //关闭当前frame
+                    parent.layer.close(index);
+                    $(".layui-form").submit();
+                });
+                return false;
+            });
+
+
+            //自定义验证规则
+            form.verify({
+                title: function(value){
+                    if(value.length < 5){
+                        return '标题至少得5个字符啊';
+                    }
+                }
+                ,pass: [
+                    /^[\S]{6,12}$/
+                    ,'密码必须6到12位，且不能出现空格'
+                ]
+                ,content: function(value){
+                    layedit.sync(editIndex);
+                }
+            });
+        });
+
+
+
+	</script>
 </body> 
 </html>
     

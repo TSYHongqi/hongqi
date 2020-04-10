@@ -39,20 +39,20 @@ public interface LoginService {
     /**
      * 查询用户所有权限,返回值是权限名集合
      */
-    Set<String> listPermissions(String empNo);
+    Set<String> listPermissions(String empNo,Integer roleID);
     /**
      * 一级目录
      */
-    List<SyMemus> getOneMenu();
+    List<SyMemus> getOneMenu(String empNo);
 
     /**
      * 二级目录
      */
-    List<SyMemus> getTowMenu(int id);
+    List<SyMemus> getTowMenu(int id,String empNo);
 
     /**
      * 三级目录
      */
-    List<SyMemus> getThreeMenu(int id);
+    List<SyMemus> getThreeMenu(int id,String empNo);
 
 }

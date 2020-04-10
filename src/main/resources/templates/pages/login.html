@@ -1,82 +1,165 @@
-﻿<!DOCTYPE html> 
-<html lang="en"> 
-<head> 
-    <meta charset="utf-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <title>宅急送物流BOS系统</title> 
-    <link rel="stylesheet" href="../../static/css/base.css">
-    <link rel="stylesheet" href="../../static/css/login/login.css">
-
-</head> 
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>宅急送物流BOS系统</title>
+	<link rel="stylesheet" type="text/css" href="../../statics/css/base.css" th:href="@{${#httpServletRequest.getContextPath()} +'/statics/css/base.css'}">
+	<link rel="stylesheet" type="text/css" href="../../statics/css/login/login.css" th:href="@{${#httpServletRequest.getContextPath()}+'/statics/css/login/login.css'}">
+	<link rel="icon" type="image/x-icon" href="../../statics/favicon.ico" th:href="@{${#httpServletRequest.getContextPath()}+'/statics/favicon.ico'}"/>
+</head>
 <body class="default">
-	<div class="login-hd">
-		<div class="left-bg"></div>
-		<div class="right-bg"></div>
-		<div class="hd-inner">
-			<span class="logo"></span>
-			<span class="split"></span>
-			<span class="sys-name">宅急送物流BOS平台</span>
-		</div>
+<div class="login-hd">
+	<div class="left-bg"></div>
+	<div class="right-bg"></div>
+	<div class="hd-inner">
+		<span class="logo"></span>
+		<span class="split"></span>
+		<span class="sys-name">宅急送物流BOS平台</span>
 	</div>
-	<div class="login-bd">
-		<div class="bd-inner">
-			<div class="inner-wrap">
-				<div class="lg-zone">
-					<div class="lg-box">
-						<div class="lg-label"><h4>用户登录</h4></div>
-						<!-- "用户名、密码"不能为空提示 -->
-						<!-- 
-							<div class="alert alert-error">
-				              <i class="iconfont">&#xe62e;</i>
-				              <span>请输入用户名</span>
-				            </div>
-						 -->
-						<form action="/doLogin" method="post" id="subform">
-							<div class="lg-username input-item clearfix">
-								<i class="iconfont">&#xe60d;</i>
-								<input type="text" name="empNo" placeholder="账号/邮箱">
+</div>
+<div class="login-bd">
+	<div class="bd-inner">
+		<div class="inner-wrap">
+			<div class="lg-zone">
+				<div class="lg-box">
+					<div class="lg-label"><h4>用户登录</h4></div>
+					<!-- "用户名、密码"不能为空提示 -->
+					<!--
+                        <div class="alert alert-error">
+                          <i class="iconfont">&#xe62e;</i>
+                          <span>请输入用户名</span>
+                        </div>
+                     -->
+					<form class="layui-form" action="/doLogin" method="post">
+						<div class="lg-username input-item clearfix">
+							<i class="iconfont">&#xe60d;</i>
+							<input type="text" name="empNo" lay-verify="required" placeholder="账号/邮箱">
+						</div>
+						<div class="lg-password input-item clearfix">
+							<i class="iconfont">&#xe634;</i>
+							<input type="password" name="pwd" lay-verify="required" placeholder="请输入密码">
+						</div>
+						<div class="lg-check clearfix">
+							<div class="input-item">
+								<i class="iconfont">&#xe633;</i>
+								<input type="text" autocomplete="off" placeholder="验证码"  lay-verify="required|noti"  name="vcode" id="vcode">
 							</div>
-							<div class="lg-password input-item clearfix">
-								<i class="iconfont">&#xe634;</i>
-								<input type="password" name="pwd" placeholder="请输入密码">
-							</div>
-							<div class="lg-check clearfix">
-								<div class="input-item">
-									<i class="iconfont">&#xe633;</i>
-									<input type="text" placeholder="验证码">
-								</div>
-								<span class="check-code">XD34F</span>
-							</div>
-							<div class="tips clearfix">
-								<label><input type="checkbox" name="rememberMe" checked="checked">记住用户名</label>
-								<a href="javascript:;" class="register">立即注册</a>
-								<a href="javascript:;" class="forget-pwd">忘记密码？</a>
-							</div>
-							<div class="enter">
-								<a href="javascript:;" class="supplier" name="submit" onClick="document.getElementById('subform').submit();return false">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
-							</div>
-						</form>
-					</div>
+							<img alt="验证码" id="imgObj" src="/getGifCode" onClick="changeImg()">
+
+						</div>
+						<div class="tips clearfix">
+						    <label> <input type="checkbox" name="rememberMe"  checked lay-ignore>记住用户名 </label>
+							<a href="javascript:;" class="register">立即注册</a>
+							<a href="javascript:;" class="forget-pwd">忘记密码？</a>
+						</div>
+						<div class="enter">
+							<a href="javascript:;" class="supplier" lay-filter="add" lay-submit="">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+							<!-- onClick="document.getElementById('subform').submit();return false"-->
+						</div>
+					</form>
 				</div>
-				<div class="lg-poster"></div>
 			</div>
+			<div class="lg-poster"></div>
 		</div>
 	</div>
-	<div class="login-ft">
-		<div class="ft-inner">
-			<div class="about-us">
-				<a href="javascript:void(0);">关于我们</a>
-				<a href="javascript:void(0);">法律声明</a>
-				<a href="javascript:void(0);">服务条款</a>
-				<a href="javascript:void(0);">联系方式</a>
-			</div>
-			<div class="address">地址：湖南省长沙市岳麓区&nbsp;邮编：410006&nbsp;&nbsp;Copyright&nbsp;©&nbsp;2010&nbsp;-&nbsp;2020&nbsp;新睿IT教育&nbsp;版权所有</div>
-			<div class="other-info">建议使用IE8及以上版本浏览器&nbsp;联系电话：0731-83062466</div>
+</div>
+<div class="login-ft">
+	<div class="ft-inner">
+		<div class="about-us">
+			<a href="javascript:void(0);">关于我们</a>
+			<a href="javascript:void(0);">法律声明</a>
+			<a href="javascript:void(0);">服务条款</a>
+			<a href="javascript:void(0);">联系方式</a>
 		</div>
+		<div class="address">地址：湖南省长沙市岳麓区&nbsp;邮编：410006&nbsp;&nbsp;Copyright&nbsp;©&nbsp;2010&nbsp;-&nbsp;2020&nbsp;新睿IT教育&nbsp;版权所有</div>
+		<div class="other-info">建议使用IE8及以上版本浏览器&nbsp;联系电话：0731-83062466</div>
 	</div>
-</body> 
+</div>
+</body>
 </html>
-    
+<script type="text/javascript" src="../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../statics/layer/layer.js"></script>
+<script type="text/javascript" src="../../statics/newlayui/layui/layui.js"></script>
 <script type="text/javascript">
+    if (window != top)
+        top.location.href = location.href;
+
+    function changeImg() {
+		var imgSrc = $("#imgObj");
+		var src = imgSrc.attr("src");
+        imgSrc.attr("src", chgUrl(src));
+	}
+
+       // 时间戳
+       // 为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+       function chgUrl(url) {
+           var timestamp = (new Date()).valueOf();
+            url = url.substring(0, 20);
+            if ((url.indexOf("&") >= 0)) {
+               url = url + "×tamp=" + timestamp;
+			} else {
+               url = url + "?timestamp=" + timestamp;
+			}
+           return url;
+	   }
+	   
+
+
+
+    layui.use(['form', 'layedit','layer','laydate'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate =layui.laydate,
+            layedit =layui.layedit;
+
+        //监听提交
+        form.on('submit(add)', function(data){
+			layer.msg("登录成功！");
+			$(".layui-form").submit();
+
+            return false;
+        });
+
+        $("#vcode").blur(function () {
+            var vcode =$("#vcode").val();
+            $.ajax({
+                type:'post',
+                url:'/ifXiangDeng',
+                data:{'vcode':vcode},
+                success:function (a) {
+                    if("a"==a){
+                        layer.msg("验证码输入错误！",{icon: 5});
+                    }
+                }
+            })
+        });
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        form.verify({
+            noti:function(value,item){
+                var msg = '';
+                $.ajax({
+                    type:'post',
+                    url:'/ifXiangDeng',
+                    data:{'vcode':value},
+                    async:false,
+                    success:function (a) {
+                        if("a"==a){
+                            msg = '验证码输入错误！';
+                        }
+                    }
+                });
+                return msg;
+            },
+            content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+    });
 
 </script>

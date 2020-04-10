@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>工作单快速录入</title>
-<link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../../../static/css/page.css">
+<link rel="stylesheet" type="text/css" href="../../../statics/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="../../../statics/css/page.css">
 </head>
 <body>
 <!-- 外部整体 -->
@@ -16,78 +16,220 @@
 	<div class="operation">
 		<!-- 向上间距 -->
 		<div style="height: 10px;"></div>
-		<form class="layui-form" action="">
+		<form class="layui-form">
 			<!-- 操作按扭组 -->
 			<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 				<div class="layui-inline">
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">保存</button>
+					<button lay-filter="add" lay-submit="" class="layui-btn layui-btn-small btnQuery">保存</button>
 				</div>
 			</div>
 
 			<!-- 数据表格 -->
 
-		</div>
+
 		<table class="layui-table" style="width: 100%;margin: 1px auto;text-align: center;margin-top: 5px;">
 		  	<tbody>
+            <tr>
+                  <td class="layui-bg-gray" width="15%">业务通知单号</td>
+                  <td width="35%">
+                       <input type="text" lay-verify="required|noti" name="businessNoticeNo" id="businessNoticeNo" placeholder="请输入业务通知单号" autocomplete="off" class="layui-input">
+                  </td>
+                  <td class="layui-bg-gray" width="15%">工作单号</td>
+                  <td width="35%">
+                    <input type="text" lay-verify="required|wors" name="workSheetNo" id="workSheetNo" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
+                  </td>
+            </tr>
 			    <tr>
-			    	<td class="layui-bg-gray" width="15%">工作单号</td>
+			    	<!--<td class="layui-bg-gray" width="15%">通知单号</td>
 			      	<td width="35%">
-	      			     <input type="text" name="title" placeholder="请输入工作单号" autocomplete="off" class="layui-input">
-			      	</td>
+	      			     <input type="text" name="title" placeholder="请输入通知单号" autocomplete="off" class="layui-input">
+			      	</td>-->
 			      	<td class="layui-bg-gray" width="15%">到达地</td>
 			      	<td width="35%">
-						         <input type="text" name="title" placeholder="请输入到达地" autocomplete="off" class="layui-input" value="">
+						 <input type="text" lay-verify="required" name="destination" id="destination" placeholder="请输入到达地" autocomplete="off" class="layui-input" value="">
 			      	</td>
+                    <td class="layui-bg-gray">产品时限</td>
+                    <td>
+                        <input type="text" lay-verify="required" name="productTime" id="productTime" placeholder="请输入产品时限" autocomplete="off" class="layui-input" value="">
+                    </td>
+
 			    </tr>
 
 	        <tr>
-			      	<td class="layui-bg-gray">产品</td>
-			      	<td>
-						       <input type="text" name="title" placeholder="请输入产品" autocomplete="off" class="layui-input" value="">
-			      	</td>
+                <td class="layui-bg-gray">重量</td>
+                <td>
+                    <input type="text" lay-verify="required|number" name="weight" id="weight" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
+                </td>
 			      	<td class="layui-bg-gray">总件数</td>
 			      	<td>
-						       <input type="text" name="title" placeholder="请输入总件数" autocomplete="off" class="layui-input" value="">
+						 <input lay-verify="required|num" type="text" name="total" id="total" placeholder="请输入总件数" autocomplete="off" class="layui-input" value="">
 			      	</td>
 			    </tr>
 	        <tr>
-			      	<td class="layui-bg-gray">重量</td>
-	            <td>
-	              <input type="text" name="title" placeholder="请输入重量" autocomplete="off" class="layui-input" value="">
-			      	</td>
-			      	<td class="layui-bg-gray">配载要求</td>
-			      	<td>
-						       <input type="text" name="title" placeholder="请输入配载要求" autocomplete="off" class="layui-input" value="">
-			      	</td>
-			    </tr>
+                <td class="layui-bg-gray">配载要求</td>
+			      	<td colspan="3">
+                        <select lay-verify="required" name="stowageRequirements" id="stowageRequirements">
+                            <option value="" id=""></option>
+                            <option value="1" id="1">无</option>
+                            <option value="2" id="2">禁航</option>
+                            <option value="3" id="3">禁铁路</option>
+                        </select>
+                    </td>
+
+            </tr>
 
 		  	</tbody>
 		</table>
 		</form>
 	</div>
 </div>
-<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../../static/layer/layer.js"></script>
-<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../../statics/layer/layer.js"></script>
+<script type="text/javascript" src="../../../statics/layui/layui.js"></script>
 <script type="text/javascript">
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
+    layui.use(['form', 'layedit','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer,
+            layedit = layui.layedit;
+        /* form.on("radio(invalidateSign)", function (data) {
+             var ins = data.value;
+             alert(ins);
+         });*/
 
-});
+        /**
+         * 业务通知单
+         */
+        $("#businessNoticeNo").blur(function () {
+            var businessNoticeNo= $("#businessNoticeNo").val();
+            if(!/\S/.test(businessNoticeNo)){
+                //layer.msg("输入不能为空！",{icon:5});
+                return;
+            }
+            $.ajax({
+                type:'post',
+                url:'/IfbusNotiNo',
+                data:{'businessNoticeNo':businessNoticeNo},
+                success:function (data) {
+                    if("a"==data||"b"==data){
+                        layer.msg('该业务通知单格式不正确！', {icon: 2});
+                    }else {
+                        var obj=$.parseJSON(data);
+                        var sendAddress = (obj.sendAddress).substring((obj.sendAddress).indexOf('区')+1);
+                        $("#destination").val(sendAddress);
+                        $("#weight").val(obj.weight);
+                        $("#total").val(obj.packagesNum);
+                    }
+                }
+            })
+        });
+        /**
+         * 工作单
+         */
+         $("#workSheetNo").blur(function () {
+             var workSheetNo = $("#workSheetNo").val();
+             if(!/\S/.test(workSheetNo)){
+                 //layer.msg("输入不能为空！",{icon:5});
+                 return;
+             }
+             $.ajax({
+                 type:'post',
+                 url:'/IfbusNotiNo',
+                 data:{'workSheetNo':workSheetNo},
+                 success:function (a) {
+                     if("b"==a){
+                         layer.msg('该工作单已存在！', {icon: 2});
+                     }
+                 }
 
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-});
+             })
+         });
 
-//加载'laydate'时间组件
-layui.use('laydate', function(){
-  var laydate = layui.laydate;
-  //执行一个laydate实例
-  laydate.render({
-    elem: '#opTime' //指定元素
-  });
-});
+          //监听提交
+          form.on('submit(add)', function(data){
+              var businessNoticeNo = $("#businessNoticeNo").val();
+              var workSheetNo = $("#workSheetNo").val();
+              var destination = $("#destination").val();
+              var productTime = $("#productTime").val();
+              var weight = $("#weight").val();
+              var stowageRequirements = $("#stowageRequirements").val();
+              var total = $("#total").val();
+              layer.alert("新增成功！", {icon: 6},function () {
+                  $.ajax({
+                    type:'post',
+                    data:{'businessNoticeNo':''+businessNoticeNo+'','workSheetNo':''+workSheetNo+'',
+                        'destination':''+destination+'','productTime':''+productTime+'','weight':
+                        ''+weight+'','stowageRequirements':''+stowageRequirements+'','total':''+total+''
+                    },
+                    url:'/addAccWorksheet',
+                    success:function (a) {
+                        $("#businessNoticeNo").val("");
+                        $("#workSheetNo").val("");
+                        $("#destination").val("");
+                        $("#productTime").val("");
+                        $("#weight").val("");
+                        $("#stowageRequirements").val("");
+                        $("#total").val("");
+                        var index = layer.alert();
+                        layer.close(index);
+                        form.render();
+                    }
+                 });
+              });
+              return false;
+           });
+
+
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        form.verify({
+            act1:function(value,item){
+                if(!/.*市/.test(value)){
+                    return '只能输入XX市的格式！';
+                }
+            },
+            num: function(value, item){ //value：表单的值、item：表单的DOM对象
+                if(!/^\d+$/.test(value)){
+                    return '格式不正确';
+                }
+            },
+            noti:function(value,item){
+                var msg = '';
+                $.ajax({
+                    type:'post',
+                    url:'/IfbusNotiNo',
+                    data:{'businessNoticeNo':value},
+                    async:false,
+                    success:function (a) {
+                        if("a"==a||"b"==a){
+                            msg = '该业务通知单格式不正确！';
+                        }
+                    }
+                });
+                return msg;
+            },
+            wors:function (value,item) {
+                var msg = '';
+                $.ajax({
+                    type:'post',
+                    url:'/IfbusNotiNo',
+                    data:{'workSheetNo':value},
+                    async:false,
+                    success:function (a) {
+                        if("b"==a){
+                            msg= "该工作单已存在！";
+                        }
+                    }
+                });
+                return msg;
+            },
+            content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+    });
 
 $(function(){
 	//显示、隐藏剩余的查询条件
@@ -96,7 +238,7 @@ $(function(){
 	});
 
 	//新增
-	$('#opAdd').click(function(){
+	/*$('#opAdd').click(function(){
 		//页面层
 		layer.open({
 		  title: ['新增', 'color:#fff;background:#1da02b;'],
@@ -105,7 +247,7 @@ $(function(){
 		  area: ['930px', '450px'], //宽高
 		  content: 'businessAcceptance_add.html'
 		});
-	});
+	});*/
 
 	//编辑
 	$('#opUpdate').click(function(){

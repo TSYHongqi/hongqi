@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>修改宣传任务</title>
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
+</head>
+<body>
+	<form class="layui-form" action="/updPropagandaTask" method="post">
+	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+	  	<tbody>
+		    <tr>
+		    	<td class="layui-bg-gray" width="15%">发布时间</td>
+		      	<td width="35%">
+					<input type="hidden" id="id" name="id" th:value="${session.id}"/>
+					<input type="text" name="releaseTime" id="releaseTime" lay-verify="required" placeholder="请输入发布时间" autocomplete="off" class="layui-input">
+		      	</td>
+		      	<td class="layui-bg-gray" width="15%">失效时间</td>
+		      	<td width="35%">
+              <input type="text" name="failureTime" id="failureTime" lay-verify="required" placeholder="请输入失效时间" autocomplete="off" class="layui-input">
+		      	</td>
+		    </tr>
+		    <tr>
+		      	<td class="layui-bg-gray">状态</td>
+		      	<td>
+              <input type="radio" name="status" id="in1" value="1" title="有效">
+              <input type="radio" name="status" id="in0" value="0" title="作废">
+		      	</td>
+            <td class="layui-bg-gray"></td>
+            <td></td>
+		    </tr>
+		    <tr>
+		      	<td class="layui-bg-gray">宣传概要</td>
+		      	<td colspan="3">
+		      		<input type="text" lay-verify="required" name="outline" id="outline" placeholder="请输入宣传概要" autocomplete="off" class="layui-input">
+		      	</td>
+		    </tr>
+		    <tr>
+		      	<td class="layui-bg-gray">宣传内容</td>
+		      	<td colspan="3">
+		      		<textarea name="content" id="content" lay-verify="required" placeholder="请输入宣传内容" class="layui-textarea"></textarea>
+		      	</td>
+		    </tr>
+
+		    <tr>
+		      	<td colspan="4">
+					<button class="layui-btn" style="background: #1da02b;" lay-filter="upd" lay-submit="">确定</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
+		      	</td>
+		    </tr>
+	  	</tbody>
+	</table>
+	</form>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
+	<script type="text/javascript">
+        //返回
+        $("#closePage").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
+        });
+
+        layui.use(['form', 'layedit','layer','laydate'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer
+				,laydate =layui.laydate;
+
+            var id = $("#id").val();
+            $.ajax({
+                type:'post',
+                data:{'id':id},
+                url:'/queryDisProTaskById',
+                success:function (data) {
+                    var obj=$.parseJSON(data);
+                    $("#releaseTime").val(obj.releaseTime);
+                    $("#failureTime").val(obj.failureTime);
+                    $("#outline").val(obj.outline);
+                    $("#content").val(obj.content);
+                    $("#in"+obj.status).prop("checked",true);
+                    form.render(); //更新全部
+                }
+
+            });
+
+            //监听提交
+            form.on('submit(upd)', function(data){
+                layer.alert("修改成功！", {icon: 6},function () {
+                    // 获得frame索引
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.location.reload(); //刷新父页面
+                    //关闭当前frame
+                    parent.layer.close(index);
+                    $(".layui-form").submit();
+                });
+                return false;
+            });
+
+            //发布日期
+            $(this).removeAttr("lay-key");
+            var releaseTime= laydate.render({
+                elem: '#releaseTime'
+                ,type: 'datetime'
+                ,trigger : 'click',
+                min:'nowTime'
+            });
+
+            //失效日期
+            $(this).removeAttr("lay-key");
+            var failureTime= laydate.render({
+                elem: '#failureTime'
+                ,type: 'datetime'
+                ,trigger : 'click',
+                min:'nowTime'
+            });
+        });
+
+
+
+
+
+	</script>
+</body>
+</html>

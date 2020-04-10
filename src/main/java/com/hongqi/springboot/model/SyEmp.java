@@ -27,7 +27,7 @@ import java.io.Serializable;
 @Data
 public class SyEmp implements Serializable {
     private static final long serialVersionUID = -1123569614278183474L;
-    private Integer ID; //编号
+    private Integer id; //编号
     private String empName; //员工姓名
     private String empNo; //工号
     private String pwd;  //密码
@@ -40,10 +40,17 @@ public class SyEmp implements Serializable {
     private String perms;//按钮级权限
     private boolean rememberMe; //记住我
 
+    /**
+     * 新增
+     * @return
+     */
+    private String phone;
 
 
     public String getCredentialsSalt() {
         return empNo + salt;
     }
+
+    private String roleName;//角色名
 
 }

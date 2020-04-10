@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>分配</title>
-    <link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
+    <title>取消签收申请确认单详情</title>
+    <link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
 	<div class="layui-form">
@@ -17,41 +17,42 @@
           <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
               <tbody>
                 <tr>
-        		    	<td class="layui-bg-gray" width="13%">工作单号</td>
-        		      <td width="20%">GZD1001</td>
+                    <input type="hidden" name="workSheetNo" id="workSheetNo" th:value="${session.workSheetNo}"/>
+                      <td class="layui-bg-gray" width="13%">工作单号</td>
+        		      <td width="20%" id="workSheetNo1"></td>
         		      <td class="layui-bg-gray" width="13%">申请单号</td>
-        		      <td width="20%">SQDGZD1001</td>
+        		      <td width="20%" id="appNo"></td>
         		      <td class="layui-bg-gray" width="13%">申请原因</td>
-        		      <td width="20%"> 申请原因 </td>
+        		      <td width="20%" id="appWhy"></td>
         		    </tr>
                 <tr>
-        		    	<td class="layui-bg-gray">签收状态</td>
-        		      <td>已签收</td>
-                  <td class="layui-bg-gray">签收单位</td>
-        		      <td>福田分部</td>
-                  <td class="layui-bg-gray">申请人</td>
-        		      <td>老王</td>
+                      <td class="layui-bg-gray">签收类型</td>
+        		      <td id="signType"></td>
+                      <td class="layui-bg-gray">签收单位</td>
+        		      <td id="signUnit"></td>
+                      <td class="layui-bg-gray">申请人</td>
+        		      <td id="appPeople"></td>
         		    </tr>
                 <tr>
-        		    	<td class="layui-bg-gray">申请时间</td>
-        		      <td>2017-11-11 11:11:11</td>
-                  <td class="layui-bg-gray">申请单位</td>
-        		      <td>保税区分部</td>
-                  <td class="layui-bg-gray">确认人</td>
-        		      <td>老王</td>
+                      <td class="layui-bg-gray">申请时间</td>
+        		      <td id="appTime"></td>
+                      <td class="layui-bg-gray">申请单位</td>
+        		      <td id="appUnit"></td>
+                      <td class="layui-bg-gray">确认人</td>
+        		      <td id="conPeople"></td>
         		    </tr>
+                 <tr>
+                      <td class="layui-bg-gray">确认时间</td>
+        		      <td id="conTime"></td>
+                      <td class="layui-bg-gray">确认状态</td>
+        		      <td id="conStatus"></td>
+                      <td class="layui-bg-gray"></td>
+        		      <td ></td>
+                 </tr>
                 <tr>
-        		    	<td class="layui-bg-gray">确认时间</td>
-        		      <td>2017-11-11 11:11:11</td>
-                  <td class="layui-bg-gray">确认状态</td>
-        		      <td>已确认</td>
-                  <td class="layui-bg-gray"></td>
-        		      <td></td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">原因</td>
-        		      <td colspan="5">原因原因原因原因</td>
-        		    </tr>
+                      <td class="layui-bg-gray">原因</td>
+        		      <td colspan="5" id="why"></td>
+                </tr>
               </tbody>
           </table>
         </div>
@@ -59,21 +60,49 @@
 </div>
 
   </div>
-	<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 	<script type="text/javascript">
 
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
+        layui.use(['form', 'layedit','layer','laydate'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer
+                ,laydate =layui.laydate;
+
+            var workSheetNo = $("#workSheetNo").val();
+            $.ajax({
+                type:'post',
+                data:{'workSheetNo':workSheetNo},
+                url:'/queryAllByWoShNo',
+                success:function (data) {
+                    var obj=$.parseJSON(data);
+                    $("#why").html(obj.why);
+                    if(obj.conStatus=="1"){
+                        $("#conStatus").html("新增");
+                    }else if(obj.conStatus=="2"){
+                        $("#conStatus").html("同意");
+                    }
+                    $("#conTime").html(obj.conTime);
+                    $("#conPeople").html(obj.conPeople);
+                    $("#appUnit").html(obj.appUnit);
+                    $("#appTime").html(obj.appTime);
+                    $("#appPeople").html(obj.appPeople);
+                    $("#signUnit").html(obj.signUnit);
+                    $("#signType").html(obj.signType);
+                    $("#workSheetNo1").html(obj.workSheetNo);
+                    $("#appNo").html(obj.appNo);
+                    $("#appWhy").html(obj.appWhy);
+                }
+
+            });
+
 
         });
 
-        //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-        layui.use('element', function(){
-          var element = layui.element;
 
-          //…
-        });
+
+
 
     </script>
 </body>

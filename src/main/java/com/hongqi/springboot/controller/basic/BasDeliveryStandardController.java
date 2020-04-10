@@ -14,7 +14,8 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hongqi.springboot.model.BasDeliveryStandard;
-import com.hongqi.springboot.service.BasDeliveryStandardService;
+import com.hongqi.springboot.model.SyEmp;
+import com.hongqi.springboot.service.basic.BasDeliveryStandardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -66,10 +70,30 @@ public class BasDeliveryStandardController {
      */
     @RequestMapping("/findDeliveryStandard")
     @ResponseBody
-    public String findDeliveryStandard(@RequestParam(value="page",required=false) String page, @RequestParam(value="limit",required=false) String limit){
-        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
-        List<BasDeliveryStandard> standards = basDeliveryStandardService.findStandards();
+    public String findDeliveryStandard(@RequestParam(value="page",required=false) String page, @RequestParam(value="limit",required=false) String limit,
+        @RequestParam(value="name",required=false) String name,@RequestParam(value="minWeight",required=false) String minWeight,
+                                       @RequestParam(value="maxWeight",required=false) String maxWeight,@RequestParam(value="empName",required=false) String empName,
+                                       @RequestParam(value="invalidateSign",required=false) String invalidateSign,@RequestParam(value="operationTime",required=false) String operationTime) throws ParseException {
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
 
+        BasDeliveryStandard b = new BasDeliveryStandard();
+        b.setEmpName(empName);
+        b.setName(name);
+        if(invalidateSign!=""&&invalidateSign!=null) {
+            b.setInvalidateSign(Integer.parseInt(invalidateSign));
+        }
+        if(operationTime!=""&&operationTime!=null){
+            Date parse = sf.parse(operationTime);
+            b.setOperationTime(parse);
+        }
+        if(maxWeight!=""&&maxWeight!=null){
+            b.setMaxWeight(Double.parseDouble(maxWeight));
+        }
+        if(minWeight!=""&&minWeight!=null) {
+            b.setMinWeight(Double.parseDouble(minWeight));
+        }
+        PageHelper.startPage(Integer.parseInt(page), Integer.parseInt(limit));
+        List<BasDeliveryStandard> standards = basDeliveryStandardService.findStandards(b);
         PageInfo<BasDeliveryStandard> pageInfo = new PageInfo<BasDeliveryStandard>(standards);
         String jsonString = JSON.toJSONString(standards);
 
@@ -93,7 +117,6 @@ public class BasDeliveryStandardController {
     public String queryById(@PathVariable("id") String id){
         BasDeliveryStandard basDeliveryStandard = basDeliveryStandardService.queryById(Integer.parseInt(id));
         String jsonString = JSON.toJSONString(basDeliveryStandard);
-        System.out.println("queryById"+jsonString);
         return jsonString;
     }
     /**
@@ -101,7 +124,6 @@ public class BasDeliveryStandardController {
      */
     @RequestMapping("/update")
     public String update(BasDeliveryStandard basDeliveryStandard){
-        System.out.println("basDeliveryStandard"+basDeliveryStandard);
         basDeliveryStandardService.updateStandards(basDeliveryStandard);
         return "/pages/basicData/deliveryStandard";
     }
@@ -123,6 +145,36 @@ public class BasDeliveryStandardController {
 
         return "/pages/basicData/deliveryStandard";
     }
+
+    /**
+     *跳转新增页面新增
+     */
+    @RequestMapping("/addHtml")
+    public String addHtml(HttpSession session){
+        SyEmp emp =(SyEmp) session.getAttribute("emp");
+        List<BasDeliveryStandard> bas = basDeliveryStandardService.addBind(emp.getEmpNo());
+        String uname = bas.get(0).getUname();
+        session.setAttribute("emp",emp);
+        session.setAttribute("ename",emp.getEmpName());
+        session.setAttribute("uname",uname);
+        return "/pages/basicData/deliveryStandard_add";
+    }
+
+    /**
+     * 新增
+     */
+    @RequestMapping("/addStanstard")
+     public String  addStanstard(BasDeliveryStandard basDeliveryStandard,HttpSession session){
+        SyEmp emp =(SyEmp) session.getAttribute("emp");
+        List<BasDeliveryStandard> bas = basDeliveryStandardService.addBind(emp.getEmpNo());
+        int operationUnitID = bas.get(0).getOperationUnitID();
+        int operatorID = bas.get(0).getOperatorID();
+        basDeliveryStandard.setOperationUnitID(operationUnitID);
+        basDeliveryStandard.setOperatorID(operatorID);
+        basDeliveryStandardService.addStandards(basDeliveryStandard);
+        return "/pages/basicData/deliveryStandard";
+     }
+
 
 
 

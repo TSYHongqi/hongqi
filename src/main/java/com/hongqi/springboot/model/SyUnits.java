@@ -10,6 +10,7 @@
  */
 package com.hongqi.springboot.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,11 @@ public class SyUnits implements Serializable {
     private String  name; //单位名称
     private String remarks; //备注
     private int  operatorID; //操作人员
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date operationTime; //操作时间
+
+
+    private String empName;//员工姓名
+    private String empNo;//员工编号
 
 }

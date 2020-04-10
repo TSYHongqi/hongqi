@@ -23,7 +23,7 @@ pagehelper:
 #配置访问html
 spring:
   resources:
-    static-locations: classpath:/static/
+    static-locations: classpath:/statics/
   #thymeleaf模板引擎
   thymeleaf:
     prefix: classpath:/templates
@@ -60,10 +60,7 @@ spring:
       prefix: /
       suffix: .html
     #设置静态文件路径，js,css等
-    static-path-pattern: /static/**
-
-
-
+    static-path-pattern: /statics/**
 
 
 
@@ -71,9 +68,9 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
-    password: 1234
+    password: Family@1314
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/hongqi
+    url: jdbc:mysql://47.96.144.120:3306/hongqi
 
     #Druid连接池配置
     druid:

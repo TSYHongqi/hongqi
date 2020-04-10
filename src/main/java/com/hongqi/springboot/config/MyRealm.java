@@ -55,10 +55,10 @@ public class MyRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        Session session = getSession();
         System.out.println("来授权了");
         //获取用户名
         String empNo = (String)principals.getPrimaryPrincipal();
-        System.out.println("username=============="+empNo);
         //new一个授权信息
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         //给授权信息设置角色集合,只能放角色名
@@ -68,9 +68,10 @@ public class MyRealm extends AuthorizingRealm {
         String str = (String)iterator.next();
         System.out.println("所有权限"+strings);
 
+        SyEmp emp = (SyEmp)session.getAttribute("emp");
         //给授权信息设置权限集合
         //用户权限列表
-        Set<String> permsList = loginService.listPermissions(empNo);
+        Set<String> permsList = loginService.listPermissions(empNo,emp.getRoleID());
 
         Set<String> permsSet = new HashSet<String>();
         for(String perms : permsList){
@@ -161,6 +162,8 @@ public class MyRealm extends AuthorizingRealm {
         hashedCredentialsMatcher.setHashIterations(2);//散列的次数，比如散列两次，相当于 md5(md5(""));
         return hashedCredentialsMatcher;
     }
+
+
 
 
 }

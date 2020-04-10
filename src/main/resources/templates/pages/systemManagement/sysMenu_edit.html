@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>栏目</title>
-	<link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
-<div class="layui-form">
+<form class="layui-form" action="/updMenus" method="post">
 	<div class="layui-tab layui-tab-brief">
 		<ul class="layui-tab-title">
 			<li class="layui-this">修改栏目</li>
@@ -19,40 +19,40 @@
 					<tr>
 						<td class="layui-bg-gray" width="20%">上级栏目</td>
 						<td width="30%">
-							<select name="city" lay-verify="">
-								<option value="">请选择</option>
-								<option value="1">无</option>
-								<option value="0">权限管理</option>
+							<input type='hidden' lay-verify="id" name='id' th:value="${session.mid}" id="id"/>
+							<select name="parentID" id="parentID" lay-verify="required">
+								<option value="" >请输入上级栏目</option>
+								<option th:id="'p'+${pres.getParentID()}" th:each="pres : ${session.pre2}" th:text="${pres.getPtext()}" th:value="${pres.getParentID()}"></option>
 							</select>
 						</td>
 						<td class="layui-bg-gray" width="20%">栏目名称</td>
 						<td width="30%">
-							<input type="text" name="title" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
+							<input type="text" lay-verify="required" name="text" id="text" placeholder="请输入栏目名称" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="layui-bg-gray">栏目类型</td>
 						<td >
-							<input type="text" name="title" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
+							<input type="text" lay-verify="required" name="type" id="type" placeholder="请输入栏目类型" autocomplete="off" class="layui-input">
 						</td>
 						<td class="layui-bg-gray">栏目提示语</td>
 						<td>
-							<input type="text" name="title" placeholder="请输入栏目提示语" autocomplete="off" class="layui-input">
+							<input type="text" lay-verify="required" name="tip" id="tip" placeholder="请输入栏目提示语" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="layui-bg-gray">栏目地址</td>
 						<td colspan="3">
-							<input type="text" name="title" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
+							<input type="text" lay-verify="required" name="url" id="url" placeholder="请输入栏目地址" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td colspan="6">
-							<button class="layui-btn" style="background: #1da02b;">确定</button>
-							<button type="button" class="layui-btn layui-btn-primary">取消</button>
+							<button class="layui-btn" style="background: #1da02b;" lay-filter="upd" lay-submit="">确定</button>
+							<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
 						</td>
 					</tr>
 					</tbody>
@@ -62,22 +62,69 @@
 		</div>
 	</div>
 
-</div>
-<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+</form>
+<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 <script type="text/javascript">
+    //返回
+    $("#closePage").click(function(){
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);//关闭弹出的子页面窗口
+    });
 
-	//加载'form'模块，使checkbox、select、radio初始化
-	layui.use('form', function(){
+    layui.use(['form', 'layedit','layer','laydate'], function() {
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer,
+            layedit = layui.layedit,
+            laydate = layui.laydate;
 
-	});
+        var id = $("#id").val();
+        $.ajax({
+            url:"/querySysMenuById",
+            data:{'id':id},
+            type:"post",
+            success:function(data){
+                var obj=$.parseJSON(data);
+                $("#text").val(obj.text);
+                $("#type").val(obj.type);
+                $("#tip").val(obj.tip);
+                $("#url").val(obj.url);
 
-	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-	layui.use('element', function(){
-		var element = layui.element;
+                $("#parentID").each(function () {
+                    $("#p"+obj.parentID).prop("selected",true);
+                    if(obj.parentID!=$(this).val()){
+                        //清空其他option
 
-		//…
-	});
+                        $("#parentID").empty();
+                        if(obj.parentID==0){
+                            $("#parentID").append("<option value="+obj.parentID+" selected>无</option>");
+						}else{
+                            $("#parentID").append("<option value="+obj.parentID+" selected>"+obj.ptext+"</option>");
+                        }
+					}
+                    form.render(); //更新全部
+                });
+            }
+        });
+
+
+        //监听提交
+        form.on('submit(upd)', function (data) {
+            layer.alert("修改成功！", {icon: 6},function () {
+                // 获得frame索引
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.location.reload(); //刷新父   页面
+                //关闭当前frame
+                parent.layer.close(index);
+                $(".layui-form").submit();
+            });
+            return false;
+        });
+
+
+
+    })
 
 </script>
 </body>

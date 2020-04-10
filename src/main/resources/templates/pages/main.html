@@ -4,15 +4,16 @@
     <meta charset="utf-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
     <title>宅急送物流BOSS系统</title> 
-	<link rel="stylesheet" href="../../static/css/base.css">
-	<link rel="stylesheet" href="../../static/css/platform.css">
-	<link rel="stylesheet" href="../../static/custom/uimaker/easyui.css">
+	<link rel="stylesheet" href="../../statics/css/base.css">
+	<link rel="stylesheet" href="../../statics/css/platform.css">
+	<link rel="stylesheet" href="../../statics/custom/uimaker/easyui.css">
+    <link rel="icon" type="image/x-icon" href="../../statics/favicon.ico" th:href="@{${#httpServletRequest.getContextPath()}+'/statics/favicon.ico'}"/>
 </head> 
 <body>
     <div class="container">
         <div id="pf-hd">
             <div class="pf-logo">
-                <img src="../../static/images/main/main_logo.png" alt="logo">
+                <img src="../../statics/images/main/main_logo.png" alt="logo">
             </div>
             
             <div class="pf-nav-wrap">
@@ -34,7 +35,7 @@
 
             <div class="pf-user">
                 <div class="pf-user-photo">
-                    <img src="../../static/images/main/user.png" alt="">
+                    <img src="../../statics/images/main/user.png" alt="">
                 </div>
                 <h4 class="pf-user-name ellipsis">admin</h4>
                 <i class="iconfont xiala">&#xe607;</i>
@@ -182,10 +183,10 @@
          <div id="mm-tabcloseother">关闭其他</div> 
     </div>
 
-    <script type="text/javascript" src="../../static/custom/jquery.min.js"></script>
-    <script type="text/javascript" src="../../static/custom/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="../../static/js/menu.js"></script>
-    <script type="text/javascript" src="../../static/js/main.js"></script>
+    <script type="text/javascript" src="../../statics/custom/jquery.min.js"></script>
+    <script type="text/javascript" src="../../statics/custom/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../statics/js/menu.js"></script>
+    <script type="text/javascript" src="../../statics/js/main.js"></script>
     <!--[if IE 7]>
       <script type="text/javascript">
         $(window).resize(function(){

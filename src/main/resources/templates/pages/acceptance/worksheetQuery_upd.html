@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>收派标准</title>
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
+</head> 
+<body>
+	<form class="layui-form" action="/worksheetQueryUpd" method="post">
+	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+	  	<tbody>
+		    <tr>
+				<td class="layui-bg-gray">产品时限</td>
+				<td>
+					<input type="hidden" id="id" name="id" th:value="${session.id}"/>
+					<input type="text" lay-verify="required" name="productTime" id="productTime" placeholder="请输入产品时限" autocomplete="off" class="layui-input" value="">
+				</td>
+				<td class="layui-bg-gray">配载要求</td>
+				<td>
+					<select lay-verify="required" name="stowageRequirements" id="stowageRequirements">
+						<option value="" id=""></option>
+						<option value="1" id="1">无</option>
+						<option value="2" id="2">禁航</option>
+						<option value="3" id="3">禁铁路</option>
+					</select>
+				</td>
+		    </tr>
+			<tr>
+
+			</tr>
+		    <tr>
+		      	<td colspan="4">
+					<button class="layui-btn" style="background: #1da02b;" lay-filter="upd" lay-submit="">确定</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
+		      	</td>
+		    </tr>
+	  	</tbody>
+	</table>
+	</form>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
+	<script type="text/javascript">
+        //返回
+        $("#closePage").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
+        });
+
+        layui.use(['form', 'layedit','layer'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer
+           /* form.on("radio(invalidateSign)", function (data) {
+                var ins = data.value;
+                alert(ins);
+            });*/
+           var id = $("#id").val();
+           $.ajax({
+			   type:'post',
+			   data:{'id':id},
+			   url:'/queryAccWorShById',
+			   success:function (data) {
+                   //alert(data);
+                   var obj=$.parseJSON(data);
+                   $("#productTime").val(obj.productTime);
+                   var s = "";
+                   if(obj.stowageRequirements=="无".trim()){
+                       s=1;
+				   }else if(obj.stowageRequirements=="禁航".trim()){
+                       s=2;
+				   }else{
+                       s=3;
+				   }
+                   $("#stowageRequirements").each(function(){
+                       $("#"+s).prop("selected",true);
+                   });
+
+                   form.render(); //更新全部
+               }
+
+		   });
+
+            //监听提交
+            form.on('submit(upd)', function(data){
+                layer.alert("修改成功！", {icon: 6},function () {
+                    // 获得frame索引
+                    var index = parent.layer.getFrameIndex(window.name);
+                    parent.location.reload(); //刷新父页面
+                    //关闭当前frame
+                    parent.layer.close(index);
+                    $(".layui-form").submit();
+                });
+                return false;
+            });
+
+
+            //创建一个编辑器
+            var editIndex = layedit.build('LAY_demo_editor');
+
+            //自定义验证规则
+            form.verify({
+                title: function(value){
+                    if(value.length < 5){
+                        return '标题至少得5个字符啊';
+                    }
+                }
+                ,pass: [
+                    /^[\S]{6,12}$/
+                    ,'密码必须6到12位，且不能出现空格'
+                ]
+                ,content: function(value){
+                    layedit.sync(editIndex);
+                }
+            });
+        });
+
+
+
+
+	</script>
+</body> 
+</html>
+    
+

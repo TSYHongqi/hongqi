@@ -34,6 +34,13 @@ public class SyMemus implements Serializable {
     private String url; //栏目地址
     private String tip; //栏目提示语
     private String icon; //图标
-    private boolean  isCurrent; //是否打开页面、
+    private boolean  isCurrent; //是否打开页面
+
+    /**
+     * 新增
+     */
+    private String ptext; //上级栏目
+    private Integer roleID;
+
 
 }

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>转单</title>
-    <link rel="stylesheet" type="text/css" href="../../../static/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
 	<form class="layui-form">
@@ -13,36 +13,155 @@
 		    <tr>
 		    	<td class="layui-bg-gray" width="15%">转入方式</td>
 		      	<td width="35%">
-              <input type="radio" name="type" value="1" title="定区编码">
-              <input type="radio" name="type" value="2" title="小件员工号" checked>
-              <input type="radio" name="type" value="3" title="单位">
+					<input type='hidden' name='id' th:value="${session.id}" id="id"/>
+                    <input type="hidden" name='pickupAddress' th:value="${session.pickupAddress}" id="pickupAddress" >
+					<input type="radio" lay-filter="method" name="method" value="1" title="定区编码">
+					<input type="radio" lay-filter="method" name="method" value="2" title="小件员工号" checked>
+                    <input type="radio" lay-filter="method" name="method" value="3" title="单位">
 		      	</td>
 		    </tr>
 		    <tr>
 		      	<td class="layui-bg-gray">转入目标</td>
 		      	<td>
-					         <input type="text" name="title" placeholder="请输入转入目标" autocomplete="off" class="layui-input">
+					<input type="text" lay-verify="required|query" name="target" id="target" placeholder="请输入转入目标" autocomplete="off" class="layui-input">
 		      	</td>
 		    </tr>
 
 		    <tr>
 		      	<td colspan="4">
-					<button class="layui-btn" style="background: #1da02b;">确定</button>
-					<button type="button" class="layui-btn layui-btn-primary">取消</button>
+					<button class="layui-btn" style="background: #1da02b;" lay-filter="add" lay-submit="">确定</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
 		      	</td>
 		    </tr>
 	  	</tbody>
 	</table>
 	</form>
-	<script type="text/javascript" src="../../../static/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../static/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 	<script type="text/javascript">
+        //返回
+        $("#closePage").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
+        });
+        layui.use(['form', 'layedit','layer'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer
+				,layedit = layui.layedit;
+            //监听提交
 
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
 
+            form.on('submit(add)', function(data){
+                var id = $("#id").val();
+                var target = $("#target").val();
+                var method = $("input[name='method']:checked").val();
+                var pickupAddress = $("#pickupAddress").val();
+                if(method=="1"){
+                    layer.confirm('是否将该地址与目标定区建立对应关系？',{
+                        btn: ['是','否'] //按钮
+                    }, function (index) {
+                        //捉到所有被选中的，发异步进行
+                        $.ajax({
+                            type:'post',
+                            data:{'id':id,'method':method,'target':target,'pickupAddress':pickupAddress},
+                            url:'/updSinZonecode',
+                            async:false,
+                            success:function (data) {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.location.reload(); //刷新父页面
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            }
+                        })
+                    }, function(){
+                         //取消
+                    });
+                }else{
+                    layer.alert("转单成功！", {icon: 6},function () {
+                        $.ajax({
+                            type:'post',
+                            data:{'id':id,'method':method,'target':target},
+                            url:'/updSingleTurn',
+                            async:false,
+                            success:function (data) {
+                                if("a"!=data){
+                                   alert(data);
+                                }
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.location.reload(); //刷新父页面
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            }
+                        })
+                    });
+                }
+                return false;
+            });
+
+            //创建一个编辑器
+            var editIndex = layedit.build('LAY_demo_editor');
+
+            //自定义验证规则
+            form.verify({
+                title: function(value){
+                    if(value.length < 5){
+                        return '标题至少得5个字符啊';
+                    }
+                },
+				/*queryadd:function (value,item) {
+                    var method = $("input[name='method']:checked").val();
+                    var msg= '';
+                    if(method=="1"){//被点击的radio的value值
+                        if(!/.*区/.test(value)){
+                            msg= '只能输入XX区+详细地址的格式'
+                        }else{
+                            $.ajax({
+                                type:'post',
+                                data:{'method':method,'target':value},
+                                url:'/queryCheckDan',
+                                async:false,
+                                success:function (data) {
+                                    //alert(data);
+                                    if(data=="1"){
+                                        msg = "填写不正确！";
+                                    }
+                                }
+
+                            });
+						}
+                    }
+                    return msg;
+                }
+                ,*/
+				query:function(value,item){
+					var msg = '';
+                    var method = $("input[name='method']:checked").val();
+                    var target = $("#target").val();
+                    $.ajax({
+                        type:'post',
+                        data:{'method':method,'target':target},
+                        url:'/queryCheckDan',
+						async:false,
+						success:function (data) {
+                            //alert(data);
+							if(data=="b"){
+                                msg = "填写不正确！";
+							}
+                        }
+
+                    });
+                        return msg;
+				 }
+                ,content: function(value){
+                    layedit.sync(editIndex);
+                }
+            });
         });
 
-    </script>
+
+
+
+	</script>
 </body>
 </html>
