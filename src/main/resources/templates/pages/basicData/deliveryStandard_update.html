@@ -74,7 +74,6 @@
                 type:"post",
                 success:function(data){
                     var obj=$.parseJSON(data);
-
                     $("#name").val(obj.name);
                     if(obj.invalidateSign==0){
                         $("#in0").attr("checked",true);

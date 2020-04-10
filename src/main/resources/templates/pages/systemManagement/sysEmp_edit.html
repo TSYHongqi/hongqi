@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>员工管理</title>
-	<link rel="stylesheet" type="text/css" href="../../../statics/layui/css/layui.css">
+	<title>分配</title>
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
-<div class="layui-form">
+<form class="layui-form" action="/updEmp" method="post">
 	<div class="layui-tab layui-tab-brief">
 		<ul class="layui-tab-title">
 			<li class="layui-this">修改员工</li>
@@ -19,75 +19,78 @@
 					<tr>
 						<td class="layui-bg-gray" width="20%">员工姓名</td>
 						<td width="30%">
-							<input type="text" name="title" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
+							<input type="hidden" name="id" id="id" th:value="${session.empid}"  class="layui-input">
+							<input type="text" lay-verify="required" name="empName" id="empName" placeholder="请输入员工姓名" autocomplete="off" class="layui-input">
 						</td>
 						<td class="layui-bg-gray" width="20%">角色</td>
 						<td width="30%">
-							<select name="city" lay-verify="">
+							<select name="roleID" id="roleID" lay-verify="required">
 								<option value="">请选择角色</option>
-								<option value="1">系统管理员</option>
-								<option value="2">系统管理员</option>
-								<option value="3">系统管理员</option>
+								<option th:id='${sysRoles.getId()}' th:each="sysRoles : ${session.sysRole}" th:text="${sysRoles.getRoleName()}" th:value="${sysRoles.getId()}"></option>
 							</select>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="layui-bg-gray">密码</td>
 						<td >
-							<input type="password" name="title" placeholder="请输入密码" autocomplete="off" class="layui-input">
+							<input type="password" lay-verify="pass" name="pwd" id="pwd" placeholder="请输入密码" autocomplete="off" class="layui-input">
 						</td>
 						<td class="layui-bg-gray">确认密码</td>
 						<td>
-							<input type="password" name="title" placeholder="请输入确认密码" autocomplete="off" class="layui-input">
+							<input type="password" lay-verify="repass" name="rpwd" id="rpwd" placeholder="请输入确认密码" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="layui-bg-gray">查台密码</td>
 						<td >
-							<input type="password" name="title" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
+							<input type="password" lay-verify="pass" name="queryPwd" id="queryPwd" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
 						</td>
 						<td class="layui-bg-gray">确认查台密码</td>
 						<td>
-							<input type="password" name="title" placeholder="请输入确认查台密码" autocomplete="off" class="layui-input">
+							<input type="password" lay-verify="reQpass" name="rqueryPwd" id="rqueryPwd" placeholder="请输入确认查台密码" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="layui-bg-gray">是否可用</td>
 						<td >
-							<select name="city" lay-verify="">
+							<select th:if="${session.empid!=session.empid2}" name="disabled" id="disabled" lay-verify="required">
 								<option value="">请选择</option>
-								<option value="1">是</option>
-								<option value="0">否</option>
+								<option value="1" id="d1">是</option>
+								<option value="0" id="d0">否</option>
+							</select>
+							<select th:if="${session.empid==session.empid2}" name="disabled" id="disabled" lay-verify="required">
+								<option value="">请选择</option>
+								<option value="1" id="d3" selected>是</option>
 							</select>
 						</td>
 						<td class="layui-bg-gray">工号</td>
 						<td>
-							<input type="password" name="title" placeholder="请输入工号" autocomplete="off" class="layui-input">
+							<input type="text" lay-verify="required" id="empNo" name="empNo"  autocomplete="off" class="layui-input" disabled>
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td class="layui-bg-gray">所属单位</td>
 						<td >
-							<select name="city" lay-verify="">
+							<select name="empUnit" id="empUnit" lay-verify="required">
 								<option value="">请选择</option>
-								<option value="1">单位1</option>
-								<option value="2">单位2</option>
+								<option th:id="'u'+${syUnit.getId()}" th:each="syUnit : ${session.syUnits}" th:text="${syUnit.getName()}" th:value="${syUnit.getId()}"></option>
+
 							</select>
 						</td>
 						<td class="layui-bg-gray">备注</td>
 						<td>
-							<input type="password" name="title" placeholder="请输入备注" autocomplete="off" class="layui-input">
+							<input type="text" name="remark" id="remark" placeholder="请输入备注" autocomplete="off" class="layui-input">
 						</td>
 					</tr>
-					
+
 					<tr>
 						<td colspan="6">
-							<button class="layui-btn" style="background: #1da02b;">确定</button>
-							<button type="button" class="layui-btn layui-btn-primary">取消</button>
+							<button class="layui-btn" style="background: #1da02b;" lay-filter="upd" lay-submit="">确定</button>
+							<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
 						</td>
 					</tr>
 					</tbody>
@@ -97,22 +100,95 @@
 		</div>
 	</div>
 
-</div>
+</form>
 <script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
-<script type="text/javascript" src="../../../statics/layui/layui.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 <script type="text/javascript">
 
-	//加载'form'模块，使checkbox、select、radio初始化
-	layui.use('form', function(){
+    //返回
+    $("#closePage").click(function(){
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);//关闭弹出的子页面窗口
+    });
 
-	});
+    layui.use(['form', 'layedit','layer'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer,
+            layedit =layui.layedit;
+        var id = $("#id").val();
+        $.ajax({
+			type:'post',
+			data:{'id':id},
+			url:'/getUpdEmp',
+            success:function(data){
+                var obj=$.parseJSON(data);
+                $("#empName").val(obj.empName);
+                $("#roleID").each(function(){
+                    $("#"+obj.roleID).prop("selected",true);
+                    form.render(); //更新全部
+                });
+                $("#empNo").val(obj.empNo);
+                $("#empUnit").each(function(){
+                    $("#u"+obj.empUnit).prop("selected",true);
+                    form.render(); //更新全部
+                });
+                $("#disabled").each(function () {
+                    $("#d"+obj.disabled).prop("selected",true);
+                    form.render(); //更新全部
+                });
+                $("#remark").val(obj.remark);
 
-	//注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-	layui.use('element', function(){
-		var element = layui.element;
+            }
+		});
 
-		//…
-	});
+        //监听提交
+        form.on('submit(upd)', function(data){
+            layer.alert("修改成功！", {icon: 6},function () {
+                // 获得frame索引
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.location.reload(); //刷新父页面
+                //关闭当前frame
+                parent.layer.close(index);
+                $(".layui-form").submit();
+            });
+            return false;
+        });
+
+
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        form.verify({
+            pass: [
+                /^$|^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+            ,repass:function (value,item) {
+                var repassvalue = $('#pwd').val();
+                if(value != repassvalue){
+                    return '两次输入的密码不一致!';
+                }
+            },
+            reQpass:function (value,item) {
+                var repassvalue = $('#queryPwd').val();
+                if(value != repassvalue){
+                    return '两次输入的查台密码不一致!';
+                }
+            }
+            ,content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+
+
+
+    });
+
+
+
 
 </script>
 </body>

@@ -42,21 +42,21 @@ public interface LoginDao {
     /**
      * 查询用户所有权限,返回值是权限名集合
      */
-    Set<String> listPermissions(@Param("empNo")String empNo);
+    Set<String> listPermissions(@Param("empNo")String empNo,@Param("roleID")Integer roleID);
 
     /**
      * 一级目录
      */
-    List<SyMemus> getOneMenu();
+    List<SyMemus> getOneMenu(@Param("empNo") String empNo);
 
     /**
      * 二级目录
      */
-    List<SyMemus> getTowMenu(@Param("id") int id);
+    List<SyMemus> getTowMenu(@Param("id") int id,@Param("empNo") String empNo);
 
     /**
      * 三级目录
      */
-    List<SyMemus> getThreeMenu(@Param("id") int id);
+    List<SyMemus> getThreeMenu(@Param("id") int id,@Param("empNo") String empNo);
 
 }

@@ -1,162 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>分配</title>
-    <link rel="stylesheet" type="text/css" href="../../../statics/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
-	<div class="layui-form">
+<div class="layui-form">
     <div class="layui-tab layui-tab-brief">
-      <ul class="layui-tab-title">
-        <li class="layui-this">业务通知单信息</li>
-        <li>工单信息</li>
-        <li>调度历史</li>
-      </ul>
-      <div class="layui-tab-content" style="height: 100px;">
-        <div class="layui-tab-item layui-show">
-          <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-              <tbody>
-                <tr>
-        		    	<td class="layui-bg-gray" width="13%">业务通知单号</td>
-        		      <td width="20%">GD1001</td>
-        		      <td class="layui-bg-gray" width="13%">预约收件时间</td>
-        		      <td width="20%">2017-10-17 14:31</td>
-        		      <td class="layui-bg-gray" width="13%">客户名称</td>
-        		      <td width="20%"> 老王 </td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">取件地址</td>
-        		      <td colspan="5">湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">客户编号</td>
-        		      <td>BH1001</td>
-                  <td class="layui-bg-gray">联系人</td>
-        		      <td>老王</td>
-                  <td class="layui-bg-gray">电话</td>
-        		      <td>18612345678</td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">重量</td>
-        		      <td>1kg</td>
-                  <td class="layui-bg-gray">体积</td>
-        		      <td>1</td>
-                  <td class="layui-bg-gray">重要提示</td>
-        		      <td>重要提示内容</td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">到达城市</td>
-        		      <td>深圳</td>
-                  <td class="layui-bg-gray">取货人员信息</td>
-        		      <td>老何</td>
-                  <td class="layui-bg-gray"></td>
-        		      <td></td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">派送地址</td>
-        		      <td colspan="5">深圳市福田保税区桃花路腾邦物流大厦</td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">处理单位</td>
-        		      <td>保税区分部</td>
-                  <td class="layui-bg-gray">通知单来源</td>
-        		      <td>电话</td>
-                  <td class="layui-bg-gray">单号修改标志</td>
-        		      <td>标志</td>
-        		    </tr>
-              </tbody>
-          </table>
-        </div>
-        <div class="layui-tab-item">
-          <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-              <tbody>
-                <tr>
-                  <td class="layui-bg-gray" width="13%">工单号</td>
-                  <td width="20%">GD1001</td>
-                  <td class="layui-bg-gray" width="13%">工单类型</td>
-                  <td width="20%">类型</td>
-                  <td class="layui-bg-gray" width="13%">取件状态</td>
-                  <td width="20%">已取</td>
-                </tr>
-                <tr>
-                  <td class="layui-bg-gray">短信序号</td>
-                  <td>DX1001</td>
-                  <td class="layui-bg-gray">联系人</td>
-                  <td>老王</td>
-                  <td class="layui-bg-gray">工单生成时间</td>
-                  <td>2017-11-11 11:11:11</td>
-                </tr>
-                <tr>
-                  <td class="layui-bg-gray">追单次数</td>
-                  <td>1</td>
-                  <td class="layui-bg-gray">小件员编号</td>
-                  <td>BH1001</td>
-                  <td class="layui-bg-gray">取件单位</td>
-                  <td>福田分部</td>
-                </tr>
-                <tr>
-                  <td class="layui-bg-gray">取件时间</td>
-                  <td>2017-11-12 11:11:11</td>
-                  <td class="layui-bg-gray">分拣编码</td>
-                  <td>FLBM1001</td>
-                  <td class="layui-bg-gray"></td>
-                  <td></td>
-                </tr>
-              </tbody>
-          </table>
-        </div>
-        <div class="layui-tab-item">
-          <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
-              <tbody>
-                <tr>
-                  <td class="layui-bg-gray" width="13%">调度序号</td>
-                  <td width="20%">GD1001</td>
-                  <td class="layui-bg-gray" width="13%">调入单位</td>
-                  <td width="20%">类型</td>
-                  <td class="layui-bg-gray" width="13%">操作人</td>
-                  <td width="20%">已取</td>
-                </tr>
-                <tr>
-                  <td class="layui-bg-gray">操作单位</td>
-                  <td>DX1001</td>
-                  <td class="layui-bg-gray">操作时间</td>
-                  <td>2017-11-11 11:11:11</td>
-                  <td class="layui-bg-gray">状态</td>
-                  <td></td>
-                </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">备注</td>
-        		      <td colspan="5">备注信息</td>
-        		    </tr>
-                <tr>
-                  <td class="layui-bg-gray">退回原因</td>
-                  <td colspan="5">退回原因详细</td>
-                </tr>
-              </tbody>
-          </table>
+        <ul class="layui-tab-title">
+            <li class="layui-this">业务通知单信息</li>
+            <li>工单信息</li>
+            <li>调度历史</li>
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+            <div class="layui-tab-item layui-show">
+                <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+                    <tbody>
+                    <tr>
+                        <input type="hidden" name="businessNoticeNo" id="businessNoticeNo" th:value="${session.businessNoticeNo}"/>
+                        <td class="layui-bg-gray" width="13%">业务通知单号</td>
+                        <td width="20%" th:text="${session.businessNoticeNo}"> </td>
+                        <td class="layui-bg-gray" width="13%">预约收件时间</td>
+                        <td width="20%" th:text="${session.oneAccBusiness.reservationTime}"> </td>
+                        <td class="layui-bg-gray" width="13%">客户名称</td>
+                        <td width="20%" th:text="${session.oneAccBusiness.customName}"></td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">取件地址</td>
+                        <td colspan="5" th:text="${session.oneAccBusiness.pickupAddress}"> </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">客户编号</td>
+                        <td th:text="${session.oneAccBusiness.customCode}"> </td>
+                        <td class="layui-bg-gray">客户电话</td>
+                        <td th:text="${session.oneAccBusiness.telPhone}">  </td>
+                        <td class="layui-bg-gray">到达城市</td>
+                        <td th:text="${session.oneAccBusiness.arriveCity}"> </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">重量</td>
+                        <td th:text="${session.oneAccBusiness.weight}"> </td>
+                        <td class="layui-bg-gray">体积</td>
+                        <td th:text="${session.oneAccBusiness.volume}"> </td>
+                        <td class="layui-bg-gray">重要提示</td>
+                        <td th:text="${session.oneAccBusiness.importantHints}"> </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">取货人</td>
+                        <td th:text="${session.oneAccBusiness.linkman}"> </td>
+                        <td class="layui-bg-gray">取货人员电话</td>
+                        <td th:text="${session.oneAccBusiness.phone}"> </td>
+                        <td class="layui-bg-gray"></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">派送地址</td>
+                        <td colspan="5" th:text="${session.oneAccBusiness.sendAddress}"> </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">处理单位</td>
+                        <td id="pname">无 </td>
+                        <td class="layui-bg-gray"></td>
+                        <td> </td>
+                        <td class="layui-bg-gray"></td>
+                        <td> </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="layui-tab-item">
+                <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+                    <tbody>
+                    <tr>
+                        <td class="layui-bg-gray" width="13%">工单号</td>
+                        <td width="20%" id="jobNo">无 </td>
+                        <td class="layui-bg-gray" width="13%">工单类型</td>
+                        <td width="20%" id="jobType"> 无 </td>
+                        <td class="layui-bg-gray" width="13%">取件状态</td>
+                        <td width="20%" id="pickupStatus">无 </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">短信序号</td>
+                        <td id="shortMessageint">无  </td>
+                        <td class="layui-bg-gray">取件时间</td>
+                        <td id="pickupTime"> 无 </td>
+                        <td class="layui-bg-gray">工单生成时间</td>
+                        <td id="workGenerationTime">无  </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">追单次数</td>
+                        <td id="afterSingleNum">无  </td>
+                        <td class="layui-bg-gray">小件员编号</td>
+                        <td id="smallMemberNum">无  </td>
+                        <td class="layui-bg-gray"></td>
+                        <td> </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="layui-tab-item">
+                <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+                    <tbody>
+                    <tr>
+                        <td class="layui-bg-gray" width="13%">调度序号</td>
+                        <td width="20%" id="dispatchSequence">无 </td>
+                        <td class="layui-bg-gray" width="13%">调入单位</td>
+                        <td width="20%" id="name">无 </td>
+                        <td class="layui-bg-gray" width="13%">操作人</td>
+                        <td width="20%" id="empName">无 </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">操作单位</td>
+                        <td id="uname">无 </td>
+                        <td class="layui-bg-gray">操作时间</td>
+                        <td id="operationTime">无 </td>
+                        <td class="layui-bg-gray">状态</td>
+                        <td id="status">无</td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">备注</td>
+                        <td colspan="5" id="remark"> </td>
+                    </tr>
+                    <tr>
+                        <td class="layui-bg-gray">退回原因</td>
+                        <td colspan="5" id="reason"> </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
 </div>
+<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['form','element', 'layedit','layer'], function() {
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer
+            ,element = layui.element;
+        var businessNoticeNo = $("#businessNoticeNo").val();
+        $.ajax({
+            type: 'post',
+            data: {'businessNoticeNo': businessNoticeNo},
+            url: '/findAllDetailByBus',
+            async:false,
+            success: function (data) {
+                var obj = $.parseJSON(data);
+                $("#pname").html(obj.pname);
+                $("#jobNo").html(obj.jobNo);
+                $("#jobType").html(obj.jobType);
+                if(obj.pickupStatus==1){
+                    $("#pickupStatus").html("新单");
+                }else{
+                    $("#pickupStatus").html("已通知");
+                }
+                $("#shortMessageint").html(obj.shortMessageint);
+                $("#pickupTime").html(obj.pickupTime);
+                $("#workGenerationTime").html(obj.workGenerationTime);
+                $("#afterSingleNum").html(obj.afterSingleNum);
+                $("#smallMemberNum").html(obj.smallMemberNum);
 
-  </div>
-	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../statics/layui/layui.js"></script>
-	<script type="text/javascript">
 
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
+                $("#dispatchSequence").html(obj.dispatchSequence);
+                $("#name").html(obj.name);
+                $("#empName").html(obj.empName);
+                $("#uname").html(obj.uname);
+                $("#operationTime").html(obj.operationTime);
+                if(obj.status==1){
+                    $("#status").html("可用");
+                }else if(obj.status==0){
+                    $("#status").html("不可用");
+                }
+                $("#remark").html(obj.remark);
+                $("#reason").html(obj.reason);
 
+            }
         });
+    });
 
-        //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-        layui.use('element', function(){
-          var element = layui.element;
-
-          //…
-        });
-
-    </script>
+</script>
 </body>
 </html>

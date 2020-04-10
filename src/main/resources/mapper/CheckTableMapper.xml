@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hongqi.springboot.dao.dispatch.CheckTableDao">
+
+    <!--定区编码-->
+    <select id="queryZone" resultType="com.hongqi.springboot.model.BasZoneInfo">
+     select bz.*,bp.city,se.empNo,se.id as eid,se.empName,se.empUnit,se.phone from bas_zoneinfo bz INNER JOIN bas_partition bp on bz.zonecode = bp.zonecode
+     INNER JOIN sy_emp se on se.id=bz.zonepeople
+     where bz.zonecode =#{zoneCode} limit 1
+    </select>
+
+    <!--小件员工号 start-->
+    <select id="queryEmp" resultType="com.hongqi.springboot.model.SyEmp">
+        select * from sy_emp where empNo = #{empNo}
+    </select>
+
+
+    <!--单位-->
+    <select id="queryUnits" resultType="com.hongqi.springboot.model.SyUnits">
+        select * from sy_units where Name = #{name}
+    </select>
+
+
+
+    <!--新增定区-->
+    <insert id="addBasAssociated">
+        insert into bas_associatedaddress(ZoneCode,City,CustomAddress,AssociatedPartitions) values(
+        #{zoneCode},#{city},#{customAddress},#{associatedPartitions})
+    </insert>
+
+    <!--新增bas_associatemember-->
+    <insert id="addBasAssociMember">
+        insert into bas_associatemember(zonecode,empno,empName,subordinateUnit) values
+        (#{zoneCode},#{empNo},#{empName},#{subordinateUnit});
+    </insert>
+
+
+
+    <!--根据id查询工单信息-->
+    <select id="queryAworkById" resultType="com.hongqi.springboot.model.AllAccBusAdmiWorkOr">
+       select aw.*,ab.id as aid,ab.* from acc_workorder aw inner join acc_businessadmissibility ab on
+       aw.BusinessNoticeNo = ab.BusinessNoticeNo
+       where aw.id = #{id}
+    </select>
+
+    <!--销毁工单-->
+    <update id="destoryAccwork">
+        update acc_workorder set JobType =3 where id = #{id}
+    </update>
+
+
+    <!--增加新工单-->
+    <insert id="addWorkOrder">
+        INSERT into ACC_WorkOrder(businessNoticeNo,jobNo,jobType,pickupStatus,shortMessageint,
+        workGenerationTime,afterSingleNum,smallMemberNum,pickupUnit,pickupTime,sortingCode) values(#{businessNoticeNo},#{jobNo},#{jobType},
+        #{pickupStatus},#{shortMessageint},now(),0,#{smallMemberNum},#{pickupUnit},
+        #{pickupTime},null)
+    </insert>
+
+    <!--修改受理表-->
+    <update id="updAccBusById">
+        UPDATE acc_businessadmissibility set linkman = #{linkman},phone= #{phone},
+        pickerInfo = #{pickerInfo},processingUnit = #{processingUnit},city= #{city}
+        where id = #{aid}
+    </update>
+
+    <!--查询bas_associatedaddress-->
+    <select id="findBasAssoAddr" resultType="com.hongqi.springboot.model.BasAssociatedAddress">
+        select * from bas_associatedaddress where CustomAddress  = #{customAddress}
+    </select>
+
+    <!--根据单位得到-->
+    <select id="queryUnitByName" resultType="com.hongqi.springboot.model.SyEmp">
+        select se.* from sy_emp se INNER JOIN sy_units su
+        on se.id=su.OperatorID where su.name=#{name}
+    </select>
+
+    <!--生成历史调度信息-->
+    <insert id="addDispatchHistory">
+        insert into dis_dispatchhistory(dispatchSequence,transferredUnit,operatorID,operationUnitID,operationTime,
+        remark,status,reason,BusinessNoticeNo)
+        values(#{dispatchSequence},#{transferredUnit},#{operatorID},#{operationUnitID},now(),
+        #{remark},#{status},#{reason},#{businessNoticeNo})
+    </insert>
+
+
+    <!--最新调度信息-->
+    <select id="findDispatchHistory" resultType="java.lang.String">
+        select max(dispatchSequence) from dis_dispatchhistory
+    </select>
+
+
+
+
+
+
+</mapper>

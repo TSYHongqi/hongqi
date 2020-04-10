@@ -3,14 +3,138 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hongqi.springboot.dao.acceptance.BusinessAcceptanceDao">
 
+    <!--查询-->
     <select id="findBusinessAcceptance" resultType="com.hongqi.springboot.model.AccBusinessAdmissibility">
-        select * from acc_businessadmissibility where 1 = 1
+        select ac.*,ba.city acity from acc_businessadmissibility ac INNER JOIN bas_zonecustominfo z on
+        ac.CustomCode = z.CustomCode
+        INNER JOIN bas_area ba on ba.PostalCode = z.CityName
+        INNER JOIN acc_workorder aw on ac.businessNoticeNo=aw.businessNoticeNo
+        where ac.SingleType ='系统分单' and aw.JobType !=3
         <if test="businessNoticeNo != null and businessNoticeNo!=''">
-            AND businessNoticeNo like "%"#{businessNoticeNo}"%"
+            AND ac.businessNoticeNo like "%"#{businessNoticeNo}"%"
         </if>
         <if test="customCode != null and customCode!=''">
-            AND customCode like "%"#{customCode}"%"
+            AND ac.customCode like "%"#{customCode}"%"
+        </if>
+        order by ac.id desc
+    </select>
+
+
+    <!--通过手机号码查找客户信息客户编号、客户姓名、取件地址、-->
+    <select id="queryCusByPhone" parameterType="java.lang.String" resultType="com.hongqi.springboot.model.BasZonecustomInfo">
+        select * from bas_zonecustominfo where mobileNo = #{mobileNo}
+    </select>
+
+    <!--根据用户取件地址得到定区id-->
+    <select id="queryByAddr" resultType="com.hongqi.springboot.model.BasZoneInfo">
+        select  em.phone,em.id as eid,em.empname,em.empunit,em.empno,em.querypwd, bzi.*,ba.PostalCode from bas_area ba INNER JOIN bas_partition bp
+        on bp.county= ba.county INNER JOIN bas_zoneinfo bzi on bp.zonecode = bzi.zonecode
+        INNER JOIN sy_emp em on em.id = bzi.zonepeople
+        where bp.county = #{county} and INSTR(#{pickupAddress},bp.keyword)&gt;0  and
+        (SELECT GetNum(#{pickupAddress}) from DUAL)&gt;=Startint and (SELECT GetNum(#{pickupAddress}) from DUAL)
+        &lt;=Terminateint
+    </select>
+
+
+    <!--查询区是否存在-->
+    <select id="ifExitsAddr" parameterType="java.lang.String" resultType="com.hongqi.springboot.model.BasArea">
+        select * from bas_area where county = #{county}
+    </select>
+
+    <!--查询城市是否与区匹配,通过城市查找区-->
+    <select id="ifMatch" resultType="com.hongqi.springboot.model.BasArea" parameterType="java.lang.String">
+        select * from bas_area where city = #{city}
+        <if test="county != null and county!=''">
+            and county = #{county}
         </if>
     </select>
+
+    <!--得到最新的业务通知单编号-->
+    <select id="getNoticeNo" resultType="com.hongqi.springboot.model.AccBusinessAdmissibility">
+        select * from acc_businessadmissibility where BusinessNoticeNo = (select max(BusinessNoticeNo) from acc_businessadmissibility)
+    </select>
+
+    <!--增加业务受理表-->
+    <insert id="addBusAcc">
+         INSERT into acc_businessadmissibility(businessNoticeNo,reservationTime,customName,pickupAddress,customCode,linkman,telPhone,weight
+         ,volume,importantHints,arriveCity,pickerInfo,sendAddress,processingUnit,notificationSource,customNoModifyFlag,
+         singleType,packagesNum,production,city,sendMan,sendPhone,phone)
+          values(#{businessNoticeNo},#{reservationTime},#{customName},#{pickupAddress},#{customCode},#{linkman},#{telPhone},#{weight}
+         ,#{volume},#{importantHints},#{arriveCity},#{pickerInfo},#{sendAddress},#{processingUnit},#{notificationSource},#{customNoModifyFlag},
+         #{singleType},#{packagesNum},#{production},#{city},#{sendMan},#{sendPhone},#{phone})
+    </insert>
+
+    <!--增加客户记录-->
+    <insert id="addCus">
+        INSERT into bas_zonecustominfo(customCode,customName,mobileNo,cityName,cstomAddress,zoneInfoID) values(#{customCode},#{customName},#{mobileNo},
+        #{cityName},#{cstomAddress},#{zoneInfoID})
+    </insert>
+
+    <!--查找工单号-->
+    <select id="queryMax" resultType="com.hongqi.springboot.model.AccWorkOrder">
+      select * from ACC_WorkOrder where JobNo=( select max(JobNo) from ACC_WorkOrder)
+    </select>
+
+    <!--增加新工单-->
+    <insert id="addWorkOrder">
+        INSERT into ACC_WorkOrder(businessNoticeNo,jobNo,jobType,pickupStatus,shortMessageint,
+        workGenerationTime,afterSingleNum,smallMemberNum,pickupUnit,pickupTime,sortingCode) values(#{businessNoticeNo},#{jobNo},#{jobType},
+        #{pickupStatus},#{shortMessageint},now(),0,#{smallMemberNum},#{pickupUnit},
+        #{pickupTime},null)
+    </insert>
+    <insert id="addWorkOrder1">
+        INSERT into ACC_WorkOrder(businessNoticeNo,jobNo,jobType,pickupStatus,shortMessageint,
+        workGenerationTime,afterSingleNum,smallMemberNum,pickupUnit,pickupTime,sortingCode) values(#{businessNoticeNo},#{jobNo},#{jobType},
+        #{pickupStatus},#{shortMessageint},now(),0,#{smallMemberNum},#{pickupUnit},
+        #{pickupTime},null)
+    </insert>
+
+    <!--根据id查询是否存在-->
+    <select id="queryById" parameterType="java.lang.Integer" resultType="com.hongqi.springboot.model.AccBusinessAdmissibility">
+          select * from acc_businessadmissibility where id = #{id}
+    </select>
+
+    <!--修改业务受理表-->
+    <update id="updateWorking">
+        update acc_businessadmissibility ac INNER JOIN bas_zonecustominfo bz on ac.CustomCode = bz.CustomCode set
+        ac.CustomName = #{customName},bz.CustomName= #{customName},bz.CstomAddress=#{pickupAddress},ac.TelPhone =#{telPhone} , bz.MobileNo =#{telPhone},ac.CustomCode = #{customCode},bz.CustomCode=#{customCode},
+        ac.businessNoticeNo =#{businessNoticeNo} ,ac.reservationTime=#{reservationTime},ac.pickupAddress =#{pickupAddress},
+        ac.weight =#{weight},ac.volume =#{volume},ac.importantHints =#{importantHints},ac.arriveCity=#{arriveCity},ac.sendAddress =#{sendAddress},
+         ac.notificationSource=#{notificationSource},ac.customNoModifyFlag=#{customNoModifyFlag},ac.linkman = #{linkman},bz.zoneInfoId = #{zoneInfoID}
+         ,ac.singleType = #{singleType},ac.packagesNum = #{packagesNum},ac.production=#{production},ac.city=#{city},bz.cityName = #{postalCode},ac.processingUnit=#{processingUnit},
+         ac.sendMan = #{sendMan},ac.sendPhone= #{sendPhone},ac.pickerInfo=#{pickerInfo}
+         where ac.id= #{id}
+    </update>
+
+    <!--追单-->
+    <update id="updateWork">
+        update acc_workorder set jobType = #{jobType},pickupStatus=#{pickupStatus},afterSingleNum =
+        afterSingleNum+1,WorkGenerationTime = now() where id = #{id}
+    </update>
+
+    <!--查询工作单的状态-->
+    <select id="queryWorkById" resultType="com.hongqi.springboot.model.AccWorkOrder">
+        select * from acc_workorder where id = #{id}
+    </select>
+    <!--短信序号-->
+    <select id="queryShortMessageint" resultType="java.lang.Integer">
+        select max(ShortMessageint) from acc_workorder where SmallMemberNum =#{id}
+    </select>
+
+    <!--根据区得到邮政编码-->
+    <select id="queryPostByCounty" resultType="com.hongqi.springboot.model.BasArea">
+        select * from bas_area where county=#{county}
+    </select>
+
+    <!--销毁-->
+    <update id="destorywork">
+        update acc_workorder set JobType =3 where BusinessNoticeNo=#{businessNoticeNo}
+    </update>
+
+    <update id="destorywork2">
+       update acc_businessadmissibility set CustomNoModifyFlag =0 where BusinessNoticeNo=#{businessNoticeNo}
+    </update>
+
+
 
 </mapper>

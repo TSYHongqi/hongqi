@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>查台转单</title>
-<link rel="stylesheet" type="text/css" href="../../../statics/layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="../../../statics/css/page.css">
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../../../statics/css/page.css">
 </head>
 <body>
 <!-- 外部整体 -->
@@ -22,24 +22,24 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">来电电话:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				    	<input type="text" name="title" placeholder="请输入来电电话" autocomplete="off" class="layui-input">
+				    	<input type="text" name="phone" id="phone" placeholder="请输入来电电话" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label" >通知单号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入通知单号" autocomplete="off" class="layui-input">
+						<input type="text" name="businessNoticeNo" id="businessNoticeNo" placeholder="请输入通知单号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 				<!-- 查询按钮组 -->
 			    <div class="layui-inline">
-					<button type="button" class="layui-btn btnQuery">
+					<button type="submit" lay-submit="" class="layui-btn btnQuery" lay-filter="sreach">
 						<i class="layui-icon">&#xe615;</i> 查台
 					</button>
 
-					<button type="button" class="layui-btn btnOther">
+					<button type="reset" class="layui-btn btnOther">
 						<i class="layui-icon">&#x1002;</i> 重置
 					</button>
 
@@ -56,28 +56,28 @@
 				<div class="layui-inline">
 				    <label class="layui-form-label">工单日期:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-							<input type="text" name="title" placeholder="请输入工单日期" autocomplete="off" class="layui-input">
+							<input type="text" name="workGenerationTime" id="workGenerationTime" placeholder="请输入工单日期" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label">员工工号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入员工工号" autocomplete="off" class="layui-input">
+				     	<input type="text" name="empNo" id="empNo" placeholder="请输入员工工号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 			    <div class="layui-inline">
 				    <label class="layui-form-label">短信序号:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入短信序号" autocomplete="off" class="layui-input">
+				     	<input type="text" name="shortMessageint" id="shortMessageint" placeholder="请输入短信序号" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 
 					<div class="layui-inline">
 				    <label class="layui-form-label">查台密码:</label>
 				    <div class="layui-input-block" style="width: 150px;">
-				     	<input type="text" name="title" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
+				     	<input type="text" name="queryPwd" id="queryPwd" placeholder="请输入查台密码" autocomplete="off" class="layui-input">
 				    </div>
 			    </div>
 			</div>
@@ -90,117 +90,188 @@
 				</div>
 			</div>
 
+	        <div>
 			<!-- 数据表格 -->
-			<table class="layui-table">
-				<colgroup>
-						<col width="50">
-				    <col width="60">
-				    <col width="87">
-				    <col width="87">
-				    <col width="120">
-				    <col width="160">
-				    <col width="180">
-				    <col width="80">
-				    <col width="100">
-				    <col width="90">
-				    <col>
-			  	</colgroup>
-			  	<thead>
-				    <tr>
-				    	<th><input type="checkbox" name="check" lay-skin="primary"></th>
-				    	<th>序号</th>
-				      <th>工单号</th>
-				      <th>短信序号</th>
-				      <th>业务通知单号</th>
-					  	<th>工单生成时间</th>
-					  	<th>收件地址</th>
-					  	<th>联系人</th>
-					  	<th>联系电话</th>
-					  	<th>追单次数</th>
-					  	<th>处理单位</th>
-				    </tr>
-			  	</thead>
-			  	<tbody>
-				    <tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>1</td>
-				      	<td>GD1001</td>
-				      	<td>DX1001</td>
-				      	<td>YWTZD1001</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</td>
-								<td>老王</td>
-								<td>18612345678</td>
-				      	<td>2</td>
-				      	<td>总公司</td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>2</td>
-				      	<td>GD1001</td>
-				      	<td>DX1001</td>
-				      	<td>YWTZD1001</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</td>
-								<td>老王</td>
-								<td>18612345678</td>
-				      	<td>2</td>
-				      	<td>总公司</td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>3</td>
-				      	<td>GD1001</td>
-				      	<td>DX1001</td>
-				      	<td>YWTZD1001</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</td>
-								<td>老王</td>
-								<td>18612345678</td>
-				      	<td>2</td>
-				      	<td>总公司</td>
-				    </tr>
-						<tr>
-				      	<td><input type="checkbox" name="check" lay-skin="primary"></td>
-				      	<td>4</td>
-				      	<td>GD1001</td>
-				      	<td>DX1001</td>
-				      	<td>YWTZD1001</td>
-				      	<td>2017-10-17 14:31:31</td>
-				      	<td>湖南省长沙市岳麓区枫林三路涉外国际公馆5栋2单元</td>
-								<td>老王</td>
-								<td>18612345678</td>
-				      	<td>2</td>
-				      	<td>总公司</td>
-				    </tr>
-			  	</tbody>
-			</table>
+			<table class="layui-table" id="user" lay-filter="tools"></table>
 		</div>
 		</form>
 	</div>
 </div>
 <script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../../statics/layer/layer.js"></script>
-<script type="text/javascript" src="../../../statics/layui/layui.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 <script type="text/javascript">
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
+    //加载'form'模块，使checkbox、select、radio初始化
+    var table;
+    var layer;
+    var form;
+    var laydate;
+    layui.use(['layer','table','element','form','laydate'],function () {
+        $ = layui.jquery;
+        table = layui.table;
+        layer = layui.layer;
+        form = layui.form;
+        laydate = layui.laydate;
+        // 执行一个 table 实例
+        table.render({
+            id:'alltable',
+            elem : '#user',
+            height: 480,
+            page:true,
+            cellMinWidth: 100,
+            limits: [10,25,50,75,100],  //每页条数的选择项，默认：[10,20,30,40,50,60,70,80,90]。
+            limit: 10, //每页默认显示的数量
+            url : '/findCheckTable',
+            cols : [ [ // 表头
+                {
+                    type:'checkbox'
+                },  {
+                    field : 'id',
+                    title : '序号',
+                    width : 88,
+                    sort: true
+                }, {
+                    field : 'jobNo',
+                    title : '工单号',
+                    width : 150
+                }, {
+                    field : 'shortMessageint',
+                    title : '短信序号',
+                    width : 100
+                }, {
+                    field : 'businessNoticeNo',
+                    title : '业务通知单号',
+                    width : 150
+                }, {
+                    field : 'pickupAddress',
+                    title : '收件地址',
+                    width : 230
+                }, {
+                    field : 'linkman',
+                    title : '联系人',
+                    width : 100
+                }, {
+                    field : 'phone',
+                    title : '联系电话',
+                    width : 130
+                }, {
+                    field : 'afterSingleNum',
+                    title : '追单次数',
+                    width : 130,
+                    sort: true
+                }, {
+                    field : 'name',
+                    title : '处理单位',
+                    width : 130,
+                    fixed: 'right'
+                } ] ]
+        });
 
-});
 
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-});
+            //监听提交
+            form.on('submit(sreach)', function(data){
+                layer.open({
+                    id:1,
+                    type: 1,
+                    title:'查台密码',
+                    skin:'layui-layer-rim',
+                    area:['450px', 'auto'],
+                    content: '<div class="layui-inline" style="width: 120px;  margin-left:7px; margin-top:10px;">'
+                        +'<label class="layui-form-label">查台密码:</label>'
+                        +'<div class="layui-input-block" style="width: 150px;">'
+                        +'<input id="firstpwd" type="password" class="layui-input" placeholder="请输入查台密码">'
+                        +'</div>'
+                        +'</div>'
+                    ,
+                    btn:['保存','取消'],
+                    btn1: function (index,layero) {
+                        var firstpwd = $("#firstpwd").val();
+                        $.ajax({
+                            type:'post',
+                            data:{'firstpwd':firstpwd},
+                            url:'/getQueryPwd',
+                            success:function (data) {
+                               if("a"==data){
+                                   var queryPwd =$("#queryPwd").val();
+                                   var phone = $("#phone").val();
+                                   var businessNoticeNo=$("#businessNoticeNo").val();
+                                   var workGenerationTime=$("#workGenerationTime").val();
+                                   var empNo = $("#empNo").val();
+                                   var shortMessageint = $("#shortMessageint").val();
+                                   table.reload('alltable', {page:{curr:1},url: '/findCheckTable' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                                       ,totalRow: true //开启合计行
+                                       ,cols : [ [ // 表头
+                                           {
+                                               type:'checkbox'
+                                           },  {
+                                               field : 'id',
+                                               title : '序号',
+                                               width : 88,
+                                               sort: true
+                                           }, {
+                                               field : 'jobNo',
+                                               title : '工单号',
+                                               width : 150
+                                           }, {
+                                               field : 'shortMessageint',
+                                               title : '短信序号',
+                                               width : 100
+                                           }, {
+                                               field : 'businessNoticeNo',
+                                               title : '业务通知单号',
+                                               width : 150
+                                           }, {
+                                               field : 'pickupAddress',
+                                               title : '收件地址',
+                                               width : 230
+                                           }, {
+                                               field : 'linkman',
+                                               title : '联系人',
+                                               width : 100
+                                           }, {
+                                               field : 'phone',
+                                               title : '联系电话',
+                                               width : 130
+                                           }, {
+                                               field : 'afterSingleNum',
+                                               title : '追单次数',
+                                               width : 130,
+                                               sort: true
+                                           }, {
+                                               field : 'name',
+                                               title : '处理单位',
+                                               width : 130,
+                                               fixed: 'right'
+                                           } ] ]
+                                       , where:{"queryPwd":queryPwd,"phone":phone,"businessNoticeNo":businessNoticeNo,"workGenerationTime":workGenerationTime,
+                                           "empNo":empNo,"shortMessageint":shortMessageint}
+                                   });
+                                   layer.close(index);
+                               }else{
+                                   layer.msg("查台密码输入错误",{icon:2});
+                               }
+                            }
+                        });
+                    },
+                    btn2:function (index,layero) {
+                        layer.close(index);
+                    }
 
-//加载'laydate'时间组件
-layui.use('laydate', function(){
-  var laydate = layui.laydate;
-  //执行一个laydate实例
-  laydate.render({
-    elem: '#opTime' //指定元素
-  });
-});
+                });
+
+                return false;
+            });
+
+
+
+
+        //日期
+        var operationTime= laydate.render({
+            elem: '#operationTime'
+        });
+
+
+    });
 
 $(function(){
 	//显示、隐藏剩余的查询条件
@@ -210,18 +281,121 @@ $(function(){
 
 	//转单
 	$('#singleTurn').click(function(){
-		//页面层
-		layer.open({
-		  title: ['转单', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['550px', '220px'], //宽高
-		  content: 'singleTurn.html'
-		});
-	});
+        var checkStatus = table.checkStatus("alltable"),
+            data = checkStatus.data;
+        if (data.length == 1)
+        {
+            var bid = data[0].id;
+            var pickupAddress = data[0].pickupAddress;
+            layer.open({
+                id:1,
+                type: 1,
+                title:'查台密码',
+                skin:'layui-layer-rim',
+                area:['450px', 'auto'],
+                content: '<div class="layui-inline" style="width: 120px;  margin-left:7px; margin-top:10px;">'
+                    +'<label class="layui-form-label">查台密码:</label>'
+                    +'<div class="layui-input-block" style="width: 150px;">'
+                    +'<input id="firstpwd" type="password" class="layui-input" placeholder="请输入查台密码">'
+                    +'</div>'
+                    +'</div>'
+                ,
+                btn:['保存','取消'],
+                btn1: function (index,layero) {
+                    var firstpwd = $("#firstpwd").val();
+                    $.ajax({
+                        type:'post',
+                        data:{'firstpwd':firstpwd},
+                        url:'/getQueryPwd',
+                        success:function (data) {
+                            if("a"==data){
+                                //页面层
+                                layer.open({
+                                    title: ['转单', 'color:#fff;background:#1da02b;'],
+                                    type: 2,
+                                    //skin: 'layui-layer-rim', //加上边框
+                                    area: ['550px', '220px'], //宽高
+                                    content: '/singleTurn/'+pickupAddress+'/'+bid+''
+                                });
+                                layer.close(index);
+                            }else{
+                                layer.msg("查台密码输入错误",{icon:2});
+                            }
+                        }
+                    });
+                },
+                btn2:function (index,layero) {
+                    layer.close(index);
+                }
+            });
+        }else {
+            layer.msg("请选择一行数据！",{icon:5});
+        }
+
 
 });
 
+	//重发
+    $("#retransmission").click(function () {
+        var checkStatus = table.checkStatus("alltable"),
+            data = checkStatus.data;
+        if (data.length == 1)
+        {
+            var bid = data[0].id;
+            var pickupAddress = data[0].pickupAddress;
+            layer.open({
+                id:1,
+                type: 1,
+                title:'查台密码',
+                skin:'layui-layer-rim',
+                area:['450px', 'auto'],
+                content: '<div class="layui-inline" style="width: 120px;  margin-left:7px; margin-top:10px;">'
+                    +'<label class="layui-form-label">查台密码:</label>'
+                    +'<div class="layui-input-block" style="width: 150px;">'
+                    +'<input id="firstpwd" type="password" class="layui-input" placeholder="请输入查台密码">'
+                    +'</div>'
+                    +'</div>'
+                ,
+                btn:['保存','取消'],
+                btn1: function (index,layero) {
+                    var firstpwd = $("#firstpwd").val();
+                    $.ajax({
+                        type:'post',
+                        data:{'firstpwd':firstpwd},
+                        url:'/getQueryPwd',
+                        success:function (data) {
+                            if("a"==data){
+                                //页面层
+                                 $.ajax({
+                                     type:'post',
+                                     url:'/reSend/'+bid+'',
+                                     success:function (data) {
+                                         alert(data);
+                                     }
+                                 });
+                                layer.close(index);
+                            }else{
+                                layer.msg("查台密码输入错误",{icon:2});
+                            }
+                        }
+                    });
+                },
+                btn2:function (index,layero) {
+                    layer.close(index);
+                }
+            });
+        }else {
+            layer.msg("请选择一行数据！",{icon:5});
+        }
+
+    })
+
+
+
+
+
+
+});
 </script>
 
 </body>

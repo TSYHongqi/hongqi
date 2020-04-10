@@ -59,22 +59,22 @@ public class LoginServiceImpl implements LoginService {
      * @return
      */
     @Override
-    public Set<String> listPermissions(String empName) {
-        return loginDao.listPermissions(empName);
+    public Set<String> listPermissions(String empName,Integer roleID) {
+        return loginDao.listPermissions(empName,roleID);
     }
 
     @Override
-    public List<SyMemus> getOneMenu() {
-        return loginDao.getOneMenu();
+    public List<SyMemus> getOneMenu(String empNo) {
+        return loginDao.getOneMenu(empNo);
     }
 
     @Override
-    public List<SyMemus> getTowMenu(int id) {
-        return loginDao.getTowMenu(id);
+    public List<SyMemus> getTowMenu(int id,String empNo) {
+        return loginDao.getTowMenu(id,empNo);
     }
 
     @Override
-    public List<SyMemus> getThreeMenu(int id) {
-        return loginDao.getThreeMenu(id);
+    public List<SyMemus> getThreeMenu(int id,String empNo) {
+        return loginDao.getThreeMenu(id,empNo);
     }
 }

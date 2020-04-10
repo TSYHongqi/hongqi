@@ -9,7 +9,7 @@
        on b.OperationUnitID = u.ID where 1=1
         <if test="name != null and name!=''">
         AND b.name like "%"#{name}"%"
-    </if>
+        </if>
         <if test="empName != null and empName!=''">
             AND e.empName like "%"#{empName}"%"
         </if>
@@ -25,6 +25,7 @@
         <if test="operationTime != null and operationTime!=''">
             AND to_days(b.operationTime) = to_days(#{operationTime})
         </if>
+        order by b.id desc
     </select>
     <!--修改是否作废-->
     <update id="updateInvalidateSign">
@@ -54,8 +55,8 @@
 
     <!--新增绑值-->
     <select id="addBind" resultType="com.hongqi.springboot.model.BasDeliveryStandard">
-        select e.empname,u.name as uname,b.OperatorID,b.OperationUnitID from BAS_DeliveryStandard b
-      INNER JOIN sy_emp e on b.OperatorID = e.ID INNER JOIN sy_units u on b.OperationUnitID = u.ID where e.empNo =#{empNo}
+       select e.empname,u.name as uname,e.id as OperatorID,u.id as OperationUnitID from sy_emp e  INNER JOIN sy_units u on e.empunit = u.ID
+       where e.empNo =#{empNo}
     </select>
 
 

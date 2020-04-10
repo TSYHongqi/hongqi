@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hongqi.springboot.dao.dispatch.AccWorkorderDao">
+    <select id="queryAllWorkOrder" resultType="com.hongqi.springboot.model.AccWorkOrder">
+        select aw.id,aw.businessNoticeNo,aw.jobNo,aw.shortMessageint,aw.workGenerationTime,
+        ab.PickupAddress,ab.linkman,ab.phone,aw.afterSingleNum,su.name from acc_workorder aw INNER JOIN acc_businessadmissibility ab on
+        aw.BusinessNoticeNo = ab.BusinessNoticeNo
+        INNER JOIN sy_units su on aw.pickupUnit = su.ID  INNER JOIN sy_emp se on ab.phone= se.phone
+        where aw.pickupStatus !=  5 and aw.JobType !=3
+        <if test="businessNoticeNo != null and businessNoticeNo!=''">
+            and aw.businessNoticeNo like "%"#{businessNoticeNo}"%"
+        </if>
+        <if test="queryPwd != null and queryPwd!=''">
+            and se.queryPwd = #{queryPwd}
+        </if>
+        <if test="phone != null and phone!=''">
+            and ab.phone like "%"#{phone}"%"
+        </if>
+        <if test="workGenerationTime != null and workGenerationTime!=''">
+            and aw.workGenerationTime = #{workGenerationTime}
+        </if>
+        <if test="empNo != null and empNo!=''">
+            and se.empNo = #{empNo}
+        </if>
+        <if test="shortMessageint != null and shortMessageint!=''">
+            and aw.shortMessageint = #{shortMessageint}
+        </if>
+        order by aw.workGenerationTime desc
+    </select>
+
+    <!--查询工作单的状态-->
+    <select id="queryWorkById" resultType="com.hongqi.springboot.model.AccWorkOrder">
+        select * from acc_workorder where id = #{id}
+    </select>
+
+    <!--销单-->
+    <update id="updateDistory">
+        update acc_workorder set
+        jobType = 3 where businessNoticeNo = #{businessNoticeNo}
+    </update>
+
+    <!--查找工作单中是否存在业务员通知单(BusinessNoticeNo)或者工作单号workSheetNo-->
+    <select id="queryAcWoShIfBusNo" resultType="com.hongqi.springboot.model.AccWorkSheet">
+        select * from acc_worksheet
+        where 1=1
+        <if test="businessNoticeNo != null and businessNoticeNo!=''">
+           and businessNoticeNo = #{businessNoticeNo}
+        </if>
+        <if test="workSheetNo != null and workSheetNo!=''">
+            and workSheetNo = #{workSheetNo}
+        </if>
+    </select>
+
+    <!--查找输入的BusinessNoticeNo是否在-->
+    <select id="queryAcWoNoIfBusNo" resultType="com.hongqi.springboot.model.AccBusinessAdmissibility">
+         select * from acc_businessadmissibility where businessNoticeNo = #{businessNoticeNo}
+    </select>
+
+    <!--增加工作单-->
+    <insert id="addAccWorksheet">
+       insert into acc_worksheet(WorkSheetNo,Destination,ProductTime,Total,Weight,
+       StowageRequirements,BusinessNoticeNo,Disabled) values(#{workSheetNo},#{destination},#{productTime},
+       #{total},#{weight},#{stowageRequirements},#{businessNoticeNo},1)
+    </insert>
+
+
+    <!--修改业务通知单-->
+    <update id="updAccBusiness">
+      update acc_businessadmissibility
+      set sendAddress = #{sendAddress},weight=#{weight},packagesNum=#{packagesNum}
+      where businessNoticeNo = #{businessNoticeNo}
+    </update>
+
+    <select id="queryAcc" resultType="com.hongqi.springboot.model.AccWorkSheet">
+      select aw.id,aw.workSheetNo,aw.stowageRequirements,ab.customCode,ab.production,ba.simpleCode,
+      ab.arriveCity,ab.pickupAddress,ab.businessNoticeNo,ab.linkman,se.empNo,ab.ReservationTime,
+      ab.sendMan,ab.customName,su.name from acc_worksheet aw
+     INNER JOIN  acc_businessadmissibility ab on ab.BusinessNoticeNo = aw.BusinessNoticeNo INNER JOIN bas_area ba
+      on ab.ArriveCity = ba.city INNER JOIN sy_emp se on ab.phone= se.phone
+      INNER JOIN sy_units su on se.EmpUnit = su.id
+      inner join acc_workorder ak  on ab.BusinessNoticeNo = ak.BusinessNoticeNo
+      where aw.disabled != 0 and ak.JobType !=3
+        <if test="workGenerationTime != null and workGenerationTime!=''">
+            and ak.workGenerationTime like "%"#{workGenerationTime}"%"
+        </if>
+        <if test="workSheetNo != null and workSheetNo!=''">
+            and aw.workSheetNo like "%"#{workSheetNo}"%"
+        </if>
+        <if test="packagesNum != null and packagesNum != ''">
+            and ab.packagesNum = #{packagesNum}
+        </if>
+        <if test="empNo != null and empNo!=''">
+            and se.empNo =#{empNo}
+        </if>
+        <if test="name != null and name!=''">
+            and su.name = #{name}
+        </if>
+        <if test="disabled != null and disabled!=''">
+            and aw.disabled = #{disabled}
+        </if>
+        order by ak.id desc
+    </select>
+
+    <!--根据id查询工作单-->
+    <select id="queryAccWorShById" resultType="com.hongqi.springboot.model.AccWorkSheet">
+      select aw.productTime,aw.id,aw.stowageRequirements,aw.workSheetNo,ab.customCode,ab.production,ba.simpleCode,
+      ab.arriveCity,ab.pickupAddress,ab.businessNoticeNo,ab.linkman,se.empNo,ab.ReservationTime,
+      ab.sendMan,ab.customName,su.name from
+      acc_businessadmissibility ab INNER JOIN acc_worksheet aw
+      on ab.BusinessNoticeNo = aw.BusinessNoticeNo INNER JOIN bas_area ba
+      on ab.ArriveCity = ba.city INNER JOIN sy_emp se on ab.phone= se.phone
+      INNER JOIN sy_units su on se.EmpUnit = su.id
+      inner join acc_workorder ak  on ab.BusinessNoticeNo = ak.BusinessNoticeNo
+      where  aw.id = #{id} and ak.jobType !=3
+    </select>
+
+    <!--修改工作单-->
+    <update id="worksheetQueryUpd">
+        update acc_worksheet set productTime=#{productTime},stowageRequirements =#{stowageRequirements}
+        where id=#{id}
+    </update>
+
+    <!--作废-->
+    <update id="updWorksheetQuery">
+        update acc_worksheet set Disabled = 0
+        where id=#{id}
+    </update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

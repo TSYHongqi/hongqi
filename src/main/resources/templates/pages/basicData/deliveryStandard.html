@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" >
+
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -93,7 +94,9 @@
 				<div class="layui-inline">
 					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">新增</button>
 					<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-					<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">作废</button>
+					<shiro:hasPermission name="delivery:add">
+						<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">作废</button>
+					</shiro:hasPermission>
 				</div>
 			</div>
 		</form>
@@ -185,7 +188,7 @@ layui.use(['layer','table','element','form','laydate'],function () {
          var empName = $("#empName").val();
          var invalidateSign = $("#invalidateSign").val();
          var operationTime = $("#operationTime").val();
-        table.reload('alltable', {page:{curr:1},url: '/findDeliveryStandard' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+         table.reload('alltable', {page:{curr:1},url: '/findDeliveryStandard' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
              ,totalRow: true //开启合计行
              ,cols : [ [ // 表头
                  {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>分配</title>
-    <link rel="stylesheet" type="text/css" href="../../../statics/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
 	<div class="layui-form">
@@ -17,53 +17,46 @@
           <table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
               <tbody>
                 <tr>
-        		    	<td class="layui-bg-gray" width="13%">工作单ID</td>
-        		      <td width="20%">GZDID1001</td>
+					<input type="hidden" id="workSheetNo1" name="workSheetNo" th:value="${session.workSheetNo}">
+					<td class="layui-bg-gray" width="13%">工作单ID</td>
+        		      <td width="20%" id="WorkOrderID"></td>
         		      <td class="layui-bg-gray" width="13%">工作单号</td>
-        		      <td width="20%">GZDH1001</td>
+        		      <td width="20%" id="workSheetNo"></td>
         		      <td class="layui-bg-gray" width="13%">工作单类型</td>
-        		      <td width="20%"> 类型 </td>
+        		      <td width="20%" id="workOrderType"></td>
         		    </tr>
 
                 <tr>
-        		    	<td class="layui-bg-gray">签收类型</td>
-        		      <td>派送</td>
-                  <td class="layui-bg-gray">录入单位</td>
-        		      <td>保税区分部</td>
-                  <td class="layui-bg-gray">录入人编码</td>
-        		      <td>LRR1001</td>
-        		    </tr>
+					  <td class="layui-bg-gray">签收类型</td>
+        		      <td id="signType"></td>
+					  <td class="layui-bg-gray">签收人</td>
+					  <td id="recipientName"></td>
+					  <td class="layui-bg-gray">签收时间</td>
+					  <td id="signTime"></td>
+				</tr>
+				<tr>
+					<td class="layui-bg-gray">签收单位</td>
+					<td id="uname"></td>
+					<td class="layui-bg-gray">派送员工名</td>
+					<td id="courierName"></td>
+					<td class="layui-bg-gray">派送员工号</td>
+					<td id="courierint"></td>
+				</tr>
                 <tr>
-        		    	<td class="layui-bg-gray">录入人姓名</td>
-        		      <td>老王</td>
-                  <td class="layui-bg-gray">签收人</td>
-        		      <td>老张</td>
-                  <td class="layui-bg-gray">派送员工号</td>
-        		      <td>PSY1001</td>
-        		    </tr>
+					<td class="layui-bg-gray">录入单位</td>
+					<td id="name"></td>
+					<td class="layui-bg-gray">录入人编码</td>
+					<td id="inputPersonCode"></td>
+					<td class="layui-bg-gray">录入人姓名</td>
+        		    <td id="empName"></td>
+				</tr>
                 <tr>
-        		    	<td class="layui-bg-gray">派送员工姓名</td>
-        		      <td>二狗</td>
-                  <td class="layui-bg-gray">签收单位</td>
-        		      <td>保税区分部</td>
-                  <td class="layui-bg-gray">签收时间</td>
-        		      <td>2017-11-11 11:11:11</td>
-        		    </tr>
+					<td class="layui-bg-gray">录入时间</td>
+        		    <td id="inputTime"></td>
+					<td class="layui-bg-gray">状态</td>
+					<td colspan="4" id="status"></td>
+				</tr>
 
-                <tr>
-        		    	<td class="layui-bg-gray">录入人</td>
-        		      <td>张三</td>
-                  <td class="layui-bg-gray">录入时间</td>
-        		      <td>2017-11-11 11:11:11</td>
-                  <td class="layui-bg-gray">录入单位</td>
-        		      <td>保税区分部</td>
-        		    </tr>
-                <tr>
-        		    	<td class="layui-bg-gray">作废标记</td>
-        		      <td>否</td>
-                  <td class="layui-bg-gray">异常备注</td>
-        		      <td colspan="4">异常备注异常备注</td>
-        		    </tr>
               </tbody>
           </table>
         </div>
@@ -73,21 +66,59 @@
 
   </div>
 	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../statics/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 	<script type="text/javascript">
 
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
+        layui.use(['form', 'layedit','layer','laydate'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer
+                ,laydate =layui.laydate
+                ,layedit =layui.layedit;
+
+            var workSheetNo = $("#workSheetNo1").val();
+            $.ajax({
+                type:'post',
+                data:{'workSheetNo':workSheetNo},
+                url:'/queryByWorkSheetNo',
+                success:function (data) {
+                    var obj=$.parseJSON(data);
+
+                    $("#WorkOrderID").html(obj.workOrderID);
+                    $("#workSheetNo").html(obj.workSheetNo);
+                    if(obj.workOrderType==1){
+                        $("#workOrderType").html("返单");
+                    }else if(obj.workOrderType==2){
+                        $("#workOrderType").html("调单");
+					}else{
+                        $("#workOrderType").html("正常单据");
+					}
+					if(obj.signType==1){
+					    //1.正常签收,2.反向签收
+                        $("#signType").html("正常签收");
+					}else{
+                        $("#signType").html("反向签收");
+					}
+                    $("#inputPersonCode").html(obj.inputPersonCode);
+                    $("#recipientName").html(obj.recipientName);
+                    $("#courierint").html(obj.courierint);
+                    $("#courierName").html(obj.courierName);
+                    $("#signTime").html(obj.signTime);
+                    $("#inputTime").html(obj.inputTime);
+                    if(obj.status==1){
+						$("#status").html("已签收");
+					}else if(obj.status==2){
+                        $("#status").html("取消签收");
+					}
+                    $("#name").html(obj.name);
+                    $("#empName").html(obj.empName);
+                    $("#uname").html(obj.uname);
+                }
+
+            });
 
         });
 
-        //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-        layui.use('element', function(){
-          var element = layui.element;
-
-          //…
-        });
-
-    </script>
+	</script>
 </body>
 </html>

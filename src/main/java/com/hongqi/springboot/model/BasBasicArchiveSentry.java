@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 @Data
-public class BasBasiCarchiveSentry implements Serializable {
+public class BasBasicArchiveSentry implements Serializable {
     private static final long serialVersionUID = -7993963180699106462L;
     private Integer id;//编号
     private String name;//档案名称、唯一

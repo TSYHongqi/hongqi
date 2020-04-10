@@ -6,7 +6,7 @@
 	<title>宅急送物流BOS系统</title>
 	<link rel="stylesheet" type="text/css" href="../../statics/css/base.css" th:href="@{${#httpServletRequest.getContextPath()} +'/statics/css/base.css'}">
 	<link rel="stylesheet" type="text/css" href="../../statics/css/login/login.css" th:href="@{${#httpServletRequest.getContextPath()}+'/statics/css/login/login.css'}">
-
+	<link rel="icon" type="image/x-icon" href="../../statics/favicon.ico" th:href="@{${#httpServletRequest.getContextPath()}+'/statics/favicon.ico'}"/>
 </head>
 <body class="default">
 <div class="login-hd">
@@ -31,29 +31,31 @@
                           <span>请输入用户名</span>
                         </div>
                      -->
-					<form action="/doLogin" method="post" id="subform">
+					<form class="layui-form" action="/doLogin" method="post">
 						<div class="lg-username input-item clearfix">
 							<i class="iconfont">&#xe60d;</i>
-							<input type="text" name="empNo" placeholder="账号/邮箱">
+							<input type="text" name="empNo" lay-verify="required" placeholder="账号/邮箱">
 						</div>
 						<div class="lg-password input-item clearfix">
 							<i class="iconfont">&#xe634;</i>
-							<input type="password" name="pwd" placeholder="请输入密码">
+							<input type="password" name="pwd" lay-verify="required" placeholder="请输入密码">
 						</div>
 						<div class="lg-check clearfix">
 							<div class="input-item">
 								<i class="iconfont">&#xe633;</i>
-								<input type="text" placeholder="验证码">
+								<input type="text" autocomplete="off" placeholder="验证码"  lay-verify="required|noti"  name="vcode" id="vcode">
 							</div>
-							<span class="check-code">XD34F</span>
+							<img alt="验证码" id="imgObj" src="/getGifCode" onClick="changeImg()">
+
 						</div>
 						<div class="tips clearfix">
-							<label><input type="checkbox" name="rememberMe" checked="checked">记住用户名</label>
+						    <label> <input type="checkbox" name="rememberMe"  checked lay-ignore>记住用户名 </label>
 							<a href="javascript:;" class="register">立即注册</a>
 							<a href="javascript:;" class="forget-pwd">忘记密码？</a>
 						</div>
 						<div class="enter">
-							<a href="javascript:;" class="supplier" name="submit" onClick="document.getElementById('subform').submit();return false">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+							<a href="javascript:;" class="supplier" lay-filter="add" lay-submit="">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+							<!-- onClick="document.getElementById('subform').submit();return false"-->
 						</div>
 					</form>
 				</div>
@@ -76,7 +78,88 @@
 </div>
 </body>
 </html>
+<script type="text/javascript" src="../../statics/custom/jquery.min.js"></script>
+<script type="text/javascript" src="../../statics/layer/layer.js"></script>
+<script type="text/javascript" src="../../statics/newlayui/layui/layui.js"></script>
 <script type="text/javascript">
     if (window != top)
         top.location.href = location.href;
+
+    function changeImg() {
+		var imgSrc = $("#imgObj");
+		var src = imgSrc.attr("src");
+        imgSrc.attr("src", chgUrl(src));
+	}
+
+       // 时间戳
+       // 为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+       function chgUrl(url) {
+           var timestamp = (new Date()).valueOf();
+            url = url.substring(0, 20);
+            if ((url.indexOf("&") >= 0)) {
+               url = url + "×tamp=" + timestamp;
+			} else {
+               url = url + "?timestamp=" + timestamp;
+			}
+           return url;
+	   }
+	   
+
+
+
+    layui.use(['form', 'layedit','layer','laydate'], function(){
+        $ = layui.jquery;
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate =layui.laydate,
+            layedit =layui.layedit;
+
+        //监听提交
+        form.on('submit(add)', function(data){
+			layer.msg("登录成功！");
+			$(".layui-form").submit();
+
+            return false;
+        });
+
+        $("#vcode").blur(function () {
+            var vcode =$("#vcode").val();
+            $.ajax({
+                type:'post',
+                url:'/ifXiangDeng',
+                data:{'vcode':vcode},
+                success:function (a) {
+                    if("a"==a){
+                        layer.msg("验证码输入错误！",{icon: 5});
+                    }
+                }
+            })
+        });
+        //创建一个编辑器
+        var editIndex = layedit.build('LAY_demo_editor');
+
+        //自定义验证规则
+        form.verify({
+            noti:function(value,item){
+                var msg = '';
+                $.ajax({
+                    type:'post',
+                    url:'/ifXiangDeng',
+                    data:{'vcode':value},
+                    async:false,
+                    success:function (a) {
+                        if("a"==a){
+                            msg = '验证码输入错误！';
+                        }
+                    }
+                });
+                return msg;
+            },
+            content: function(value){
+                layedit.sync(editIndex);
+            }
+        });
+
+    });
+
 </script>

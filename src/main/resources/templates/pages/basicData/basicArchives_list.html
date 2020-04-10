@@ -12,11 +12,13 @@
 <!-- 外部整体 -->
 <div class="external">
 	<!-- 操作按扭组 -->
+	<input type='hidden' name='id' th:value="${session.bAid}" id="id"/>
+
 	<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 		<div class="layui-inline">
 			<button type="button" class="layui-btn layui-btn-small btnQuery" id="opDetailAdd">新增详细信息</button>
 			<button type="button" class="layui-btn layui-btn-small btnOther" id="opUpdate">编辑</button>
-			<button type="button" class="layui-btn layui-btn-small btnOther" id="a">作废</button>
+			<button type="button" class="layui-btn layui-btn-small btnOther" id="opDelete">作废</button>
 		</div>
 	</div>
 
@@ -70,7 +72,7 @@
                 }, {
                     field : 'name',
                     title : '档案名称',
-                    width : 88
+                    width : 115
                 }, {
                     field : 'parentID',
                     title : '上级编码',
@@ -89,21 +91,21 @@
                 }, {
                     field : 'empName',
                     title : '操作人员',
-                    width : 100
+                    width : 88
 
                 }, {
                     field : 'uname',
                     title : '操作单位',
-                    width : 100
+                    width : 88
                 }, {
                     field : 'operationTime',
                     title : '操作时间',
-                    width : 169,
+                    width : 168,
                     sort: true
                 } , {
                     field : 'remarks',
                     title : '备注',
-                    width : 200
+                    width : 180
                 }] ]
         });
 
@@ -121,28 +123,64 @@ $(function(){
 
 	//新增详细信息
 	$('#opDetailAdd').click(function(){
+	    var parentID = $("#id").val();
 		//页面层
 		layer.open({
 		  title: ['新增', 'color:#fff;background:#1da02b;'],
 		  type: 2,
 		  //skin: 'layui-layer-rim', //加上边框
 		  area: ['650px', '375px'], //宽高
-		  content: 'basicArchives_detail_add.html'
+		  content: '/basicArchSeAdd/'+parentID+''
 		});
 	});
-
 	//编辑
-	$('#opUpdate').click(function(){
-		//页面层
-		layer.open({
-		  title: ['编辑', 'color:#fff;background:#1da02b;'],
-		  type: 2,
-		  //skin: 'layui-layer-rim', //加上边框
-		  area: ['650px', '375px'], //宽高
-		  content: 'basicArchives_detail_add.html'
-		});
-	});
-	
+    $('#opUpdate').click(function(){
+        var checkStatus = table.checkStatus("alltable"),
+            data = checkStatus.data;
+        if (data.length == 1)
+        {
+            var bid = data[0].id;
+            layer.open({
+                title: ['编辑', 'color:#fff;background:#1da02b;'],
+                type: 2,
+                //skin: 'layui-layer-rim', //加上边框
+                area: ['650px', '375px'], //宽高
+                content: '/getUpdBasArchSen/'+bid+''
+            });
+        }else {
+            layer.msg("请选择需要编辑的一行数据！",{icon:2});
+        }
+    });
+
+    //删除
+    $('#opDelete').click(function(){
+        var checkStatus = table.checkStatus("alltable"),
+            data = checkStatus.data;
+        if (data.length == 1)
+        {
+            var bid = data[0].id;
+            layer.confirm('确定是否作废？',{
+                btn: ['是','否'] //按钮
+            }, function (index) {
+                //捉到所有被选中的，发异步进行
+                $.post('/delBasArSenById/'+bid,function (data) {
+                    if("a"==data){
+                        layer.msg('作废成功！', {icon: 1,shade:0.5,time:1000},function () {
+                            location.reload();
+                            layer.close();
+                        });
+                    }
+                })
+            }, function(){
+
+            });
+        }else {
+            layer.msg("请选择需要删除的一行数据！",{icon:5})
+        }
+    });
+
+
+
 });
 
 </script>

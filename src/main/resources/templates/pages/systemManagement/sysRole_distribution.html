@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>角色</title>
-<link rel="stylesheet" type="text/css" href="../../../statics/layui/css/layui.css">
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 <link rel="stylesheet" type="text/css" href="../../../statics/css/page.css">
 </head>
 <body>
@@ -21,125 +21,155 @@
 			<!-- 操作按扭组 -->
 			<div class="layui-form-item" style="padding-left: 11px;height: 30px;">
 				<div class="layui-inline">
-					<button type="button" class="layui-btn layui-btn-small btnQuery" id="opAdd">保存</button>
+					<button type="button" class="layui-btn layui-btn-small btnQuery" lay-submit lay-filter="formDemo">保存</button>
 					<button type="button" class="layui-btn layui-btn-small btnOther" id="opBack">返回</button>
 				</div>
 			</div>
 			<!-- 数据表格 -->
 		</div>
+		<div>
 		<table class="layui-table" style="width: 50%;margin: 1px auto;text-align: left;margin-top: 5px;">
 		  	<tbody>
 				<!-- 系统管理 开始 -->
-				<tr>
+				 <tr th:each="pres,a : ${session.pre2}" th:id="'p'+${a.index}">
 			    	<td class="layui-bg-gray">
-						<input type="checkbox" name="" lay-skin="primary" title="系统管理"> 
+						<input type="hidden" id="rid" th:value="${session.id}"/>
+						<input type="hidden" th:name="${pres.getParentID()}">
+						<input lay-filter="erweima" type="checkbox" name ="pp" th:id="'a'+${a.index}" th:title="${pres.getPtext()}"  th:value="${pres.getParentID()}" lay-skin="primary">
 					</td>
-			    </tr>
-			    <tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="单位管理">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="员工管理">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="栏目管理">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="角色管理">
-					</td>
-			    </tr>
-				<!-- 系统管理 结束 -->
-				<!-- 基础数据 开始 -->
-				<tr>
-			    	<td class="layui-bg-gray">
-						<input type="checkbox" name="" lay-skin="primary" title="收派标准"> 
-					</td>
-			    </tr>
-			    <tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="基础档案">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="班车设置">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="取派员设置">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="区域设置">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="管理分区">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="管理定区">
-					</td>
-			    </tr>
-				<tr>
-			    	<td class="layui-bg-gray">
-						<span style="padding-left:80px;"><span>
-						<input type="checkbox" name="" lay-skin="primary" title="收派时间管理">
-					</td>
-			    </tr>
-				<!-- 基础数据 结束 -->
-				
-				<!-- 接着把静态页面里所有的模型写上 -->
-				
+			     </tr>
+
 		  	</tbody>
 		</table>
+		</div>
 		</form>
+
 	</div>
 </div>
 <script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
 <script type="text/javascript" src="../../../statics/layer/layer.js"></script>
-<script type="text/javascript" src="../../../statics/layui/layui.js"></script>
+<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 <script type="text/javascript">
-//加载'form'模块，使checkbox、select、radio初始化
-layui.use('form', function(){
+    layui.use(['form', 'layedit','layer','laydate'], function() {
+        $ = layui.jquery;
+        var form = layui.form
+            , layer = layui.layer,
+            layedit = layui.layedit,
+            laydate = layui.laydate;
+        var count =0;
+       $('input[name=pp]').each(function(){
+           //获取所有name=choice2的值
+            var parentID = $(this).val();
+            $.ajax({
+                   type:'post',
+				   async:false,
+				   url:'/getTwoMenu',
+				   data:{
+                       'parentID':parentID
+				   },
+                   success:function (data) {
+                       var obj=$.parseJSON(data);
+                       $.each(obj,function(i,result) {
+                           console.log(result.text);
+                           $("#p"+count+"").after("<tr>" +
+                               "<td class='layui-bg-gray'>" +
+                               "<span style='padding-left:80px;'><span>" +
+							   "<input type='hidden' name ='ppa' value='"+result.parentID+"'/>" +
+							   "<input lay-filter='erweima2' type='checkbox' name='pp"+result.parentID+"' id='pp"+result.id+"' lay-skin='primary' value='"+result.id+"'>" +
+                               "&nbsp;&nbsp;"+result.text+"" +
+							   " </td> " +
+                               "</tr>");
 
-});
+                           form.render(); //更新全部
+                       })
 
-//加载'table'组件
-layui.use('table', function(){
-  var table = layui.table;
-});
+                   }
+			});
+           count++;
+        });
+       var id=$("#rid").val();
 
-//加载'laydate'时间组件
-layui.use('laydate', function(){
-  var laydate = layui.laydate;
-  //执行一个laydate实例
-  laydate.render({
-    elem: '#opTime' //指定元素
-  });
-});
+            $.ajax({
+				type:'post',
+                url:'/getCheckById',
+                async:false,
+			    data:{'id':id},
+                success:function (data) {
+                var obj = $.parseJSON(data);
+                var a = 0;
+				$("input[name=pp]").each(function () {
+                    var aid = $("#a" + a + "").val();
+                    $.each(obj,function(i,result) {
+						$("#pp"+result.id+"").prop("checked",true);
+                        if (aid == result.id) {
+                            $("#a"+a+"").prop("checked",true);
+                        }
+                    });
+                    form.render(); //更新全部
+                    a++;
+                });
 
+
+
+            }
+        });
+        form.on('checkbox(erweima)', function (data) {
+            var a = data.elem.checked;
+            if(a == true){
+                $("input[name=pp"+data.value+"]").prop("checked", true);
+                form.render('checkbox');
+            }else {
+                $("input[name=pp"+data.value+"]").prop("checked", false);
+                form.render('checkbox');
+            }
+            //alert(data.elem);
+            //console.log(data.elem);
+            //alert(data.value);//判断单选框的选中值
+            //console.log(data.value);
+            //alert(data.othis);
+            //layer.tips('开关checked：' + (this.checked ? 'true' : 'false'), data.othis);
+            //layer.alert('响应点击事件');
+        });
+        //委托人费用有一个未选中全选取消选中
+        form.on('checkbox(erweima2)', function(data){
+            var a = data.elem.checked;
+            var pid = $(this).prev().val();//判断复选框
+			if(a == true){
+              $("input[name="+pid+"] + input[name=pp]").prop("checked", true);
+                form.render('checkbox');
+			}
+         });
+
+        form.on('submit(formDemo)', function(data){
+            //获取checkbox[name='pp']的值
+            var arr = new Array();
+            var arr1 = new Array();
+            $("input:checkbox[name='pp']:checked").each(function(i){
+                arr[i] = $(this).val();
+            });
+            $("input[name='ppa']").next().each(function (i) {
+                if($(this).prop("checked")==true){
+                    arr1[i] =$(this).val();
+				}
+            });
+
+            var aa= arr.join(",")+","+arr1.join(",");//将数组合并成字符串
+            $.post("/getBaoCun/"+aa+"/"+id+"", function (res) {
+                if (res == "b") {
+                    layer.msg('至少选择一个权限哦！', {time: 1800, icon: 2});
+                } else {
+                    layer.msg('保存成功！', {time: 1800, icon: 1}, function () {
+                        history.back();
+                    });
+                }
+            });
+
+            return false;
+        });
+
+
+
+    })
 $(function(){
 	//显示、隐藏剩余的查询条件
 	$('#btnMore').click(function(){
@@ -157,6 +187,7 @@ $(function(){
 		  content: 'businessAcceptance_add.html'
 		});
 	});
+
 
 	//编辑
 	$('#opUpdate').click(function(){

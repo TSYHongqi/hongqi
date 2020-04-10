@@ -2,6 +2,7 @@ package com.hongqi.springboot;
 
 import com.hongqi.springboot.model.SyEmp;
 import com.hongqi.springboot.service.LoginService;
+import org.apache.shiro.codec.Base64;
 import org.apache.shiro.crypto.RandomNumberGenerator;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
 @SpringBootTest
@@ -56,6 +58,17 @@ public class HongqiApplicationTests {
         emp.setPwd("123456");
         SyEmp emp1 = encryptPassword(emp);
         System.out.println("=========================================="+emp1);
+    }
+
+    @Test
+    void aaa() throws UnsupportedEncodingException {
+        final Base64 base64 = new Base64();
+        final String text = "123456";
+
+        final byte[] textByte = text.getBytes("UTF-8");
+        final String encodedText = base64.encodeToString(textByte);
+        System.out.println("密码：MTIzNDU2"+encodedText);
+        System.out.println(new String(base64.decode(encodedText), "UTF-8"));
     }
 
 

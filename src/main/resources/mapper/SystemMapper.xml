@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hongqi.springboot.dao.system.SystemDao">
+
+    <!--查询所有单位-->
+    <select id="queryUnit" resultType="com.hongqi.springboot.model.SyUnits">
+        select su.*,se.empno,se.empname from sy_units su INNER JOIN sy_emp se on su.OperatorID =
+        se.id where su.disabled = 1
+        <if test="name != null and name!=''">
+            and su.name like "%"#{name}"%"
+        </if>
+    </select>
+    <!--新增单位-->
+    <insert id="addSysUnit">
+         insert into sy_units(name,remarks,operatorID,operationTime) values(#{name},#{remarks},#{operatorID}
+         ,now())
+    </insert>
+    <!--修改单位-->
+    <update id="updUnit">
+         update sy_units set name = #{name},remarks= #{remarks} where id = #{id}
+    </update>
+    
+    <select id="queryById" resultType="com.hongqi.springboot.model.SyUnits">
+       select su.*,se.empno,se.empname from sy_units su INNER JOIN sy_emp se on su.OperatorID =
+       se.id where su.disabled = 1 and su.id = #{id}
+    </select>
+    <!--删除-->
+    <update id="delUnit" >
+        update sy_units set Disabled = 0 where id= #{id}
+    </update>
+
+    <!--查询所有员工-->
+    <select id="findAllEmp" resultType="com.hongqi.springboot.model.SyEmp">
+        select se.*,sr.rolename from sy_emp se INNER JOIN sy_role sr on se.roleid = sr.id where 1=1
+        <if test="disabled != null">
+            and se.disabled = #{disabled}
+        </if>
+        <if test="empName != null and empName!=''">
+            and se.empName like "%"#{empName}"%"
+        </if>
+    </select>
+
+    <!--查询最大的工号-->
+    <select id="queryMaxEmpNo" resultType="java.lang.Integer">
+          select MAX(empno) from sy_emp
+    </select>
+
+    <!--新增员工-->
+    <insert id="addEmp">
+          insert into sy_emp(empname,empno,pwd,salt,querypwd,roleid,empunit,remark,disabled)
+          values(#{empName},#{empNo},#{pwd},#{salt},#{queryPwd},#{roleID},#{empUnit},#{remark},#{disabled})
+    </insert>
+
+
+    <!--查询所有栏目-->
+    <select id="findAllMenu" resultType="com.hongqi.springboot.model.SyMemus">
+        select sm.*,(select text from sy_menus where id = sm.parentid LIMIT 1 ) as ptext from sy_menus sm
+        GROUP BY sm.text having sm.disabled =1
+        <if test="parentID != null">
+           and sm.parentID = #{parentID}
+        </if>
+        <if test="text != null and text!=''">
+          and sm.text like "%"#{text}"%"
+        </if>
+        ORDER BY sm.id asc
+    </select>
+
+    <!--删除(修改)栏目-->
+    <update id="delMenu">
+        update sy_menus set disabled = 0 where id = #{id}
+    </update>
+
+    <!--删除(修改)角色-->
+    <update id="delRole">
+        update sy_role set disabled = 0 where id = #{id}
+    </update>
+
+    <!--上级栏目-->
+    <select id="findPre" resultType="com.hongqi.springboot.model.SyMemus">
+        select sm.id,(select text from sy_menus where id = sm.parentid LIMIT 1 ) as ptext,
+        sm.parentID  from sy_menus sm
+        GROUP BY ptext having 1=1 ORDER BY sm.id asc
+    </select>
+
+    <!--上级栏目2-->
+    <select id="findPre2" resultType="com.hongqi.springboot.model.SyMemus">
+        select sm.id,(select text from sy_menus where id = sm.parentid LIMIT 1) as ptext,
+        sm.parentID  from sy_menus sm
+        GROUP BY ptext having sm.id not in(SELECT parentID from sy_menus) ORDER BY sm.id asc
+    </select>
+    
+    <!--栏目是否能删除-->
+    <select id="findMenuIfDel" resultType="com.hongqi.springboot.model.SyMemus">
+        select sm.id,(select text from sy_menus where id = sm.parentid LIMIT 1) as ptext,
+        sm.parentID  from sy_menus sm
+        GROUP BY ptext having sm.parentid = (select parentid from sy_menus where id = #{id}) and
+        sm.id not in(SELECT parentID from sy_menus) ORDER BY sm.id asc
+    </select>
+
+
+    <!--查找所有角色-->
+    <select id="findSysRole" resultType="com.hongqi.springboot.model.SyRole">
+         select * from sy_role where 1=1
+        <if test="disabled != null">
+            and disabled= #{disabled}
+        </if>
+        <if test="roleName != null and roleName!=''">
+            and roleName like "%"#{roleName}"%"
+        </if>
+    </select>
+    
+    <!--根据id查询员工-->
+    <select id="findEmpById" resultType="com.hongqi.springboot.model.SyEmp">
+          select * from sy_emp where id = #{id}
+    </select>
+
+    <!--修改员工信息-->
+    <update id="updEmp">
+        update sy_emp set EmpName = #{empName},roleID=#{roleID},
+        disabled = #{disabled},EmpUnit=#{empUnit}
+        ,remark = #{remark}
+        <if test="pwd != null and pwd!=''">
+             ,Pwd= #{pwd}
+        </if>
+        <if test="salt != null and salt!=''">
+            ,salt = #{salt}
+        </if>
+        <if test="queryPwd != null and queryPwd!=''">
+             ,QueryPwd = #{queryPwd}
+        </if>
+        where id= #{id}
+    </update>
+
+    <!--删除员工-->
+    <update id="delEmpById">
+        update sy_emp set disabled =0 where id= #{id}
+    </update>
+
+
+    <!--添加菜单-->
+    <insert id="addMenu">
+         insert into sy_menus(parentid,type,text,url,tip,disabled) values(
+         #{parentID},#{type},#{text},#{url},#{tip},1)
+    </insert>
+
+    <!--修改菜单-->
+    <update id="updMenu">
+        update sy_menus set parentid = #{parentID},type=#{type},text=#{text},
+        url=#{url},tip=#{tip} where id = #{id}
+    </update>
+
+    <!--根据父id查询-->
+    <select id="queryMenuByP" resultType="com.hongqi.springboot.model.SyMemus">
+        select * from sy_menus where parentID =#{parentID}
+    </select>
+    
+    <!--根据id查询菜单-->
+    <select id="querySysMenuById" resultType="com.hongqi.springboot.model.SyMemus">
+         select sy.*,(select se.text as ptext from sy_menus se where se.id=sy.parentid) as ptext from sy_menus sy
+         where id= #{id}
+    </select>
+
+
+    <!--查询没有下级目录(最后一级)的菜单-->
+    <select id="queryLastMenu" resultType="com.hongqi.springboot.model.SyMemus">
+     select * from sy_menus where id not in (SELECT parentID from sy_menus)
+    </select>
+
+    <!--新增角色-->
+    <select id="addRole">
+        insert into sy_role(RoleName,RoleDesc,Disabled) values(#{roleName},#{roleDesc},#{disabled})
+    </select>
+
+    <!--根据id查询角色-->
+    <select id="findRoleById" resultType="com.hongqi.springboot.model.SyRole">
+       select * from sy_role where id = #{id}
+    </select>
+
+    <!--修改角色-->
+    <update id="updRole">
+        update sy_role set RoleName= #{roleName},RoleDesc=#{roleDesc},Disabled=#{disabled} where id=#{id}
+    </update>
+
+    <!--该角色所拥有的权限-->
+    <select id="queryPerByRId" resultType="com.hongqi.springboot.model.SyMemus">
+        select m.*,r.id as RoleID from sy_emp e,sy_role r INNER JOIN
+        sy_rolesmenus rm on r.id = rm.roleid
+        INNER JOIN sy_menus m on rm.menuId = m.id
+        where r.id =#{id} and m.disabled=1 GROUP BY m.id
+    </select>
+
+    <!--根据mid菜单id删除-->
+    <delete id="delSyRMByMid">
+       delete from sy_rolesmenus where menuID=#{menuID} and roleID=#{roleID}
+       and menuID !=1 and menuID!=2 and menuID!=3
+    </delete>
+
+    <!--往sy_rolesmenus新添-->
+    <insert id="addSyRM">
+        insert into sy_rolesmenus(roleID,menuID) values(#{roleID},#{menuID})
+    </insert>
+
+
+</mapper>

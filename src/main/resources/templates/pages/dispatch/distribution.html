@@ -1,58 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>转单</title>
-    <link rel="stylesheet" type="text/css" href="../../../statics/layui/css/layui.css">
+    <title>分配</title>
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
 </head>
 <body>
 	<form class="layui-form">
 	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
 	  	<tbody>
 		    <tr>
+				<input type="hidden" name="id" id="id" th:value="${session.id}"/>
 		    	<td class="layui-bg-gray" width="15%">所属单位</td>
 		      	<td width="35%">
-              <select name="DW" lay-verify="required">
+                <select lay-filter="name" name="name" id="name" lay-verify="required">
                 <option value=""></option>
-                <option value="1">总公司</option>
-                <option value="2">岳麓区涉外分部</option>
-                <option value="3">岳麓区涉外分部</option>
-                <option value="4">岳麓区涉外分部</option>
-              </select>
+                </select>
 		      	</td>
 		    </tr>
 		    <tr>
-		      	<td class="layui-bg-gray">分拣编码</td>
+		      	<td class="layui-bg-gray">员工编号</td>
 		      	<td>
-              <select name="FLBM" lay-verify="required">
-                <option value=""></option>
-                <option value="1">FLBM1001</option>
-                <option value="2">FLBM1002</option>
-                <option value="3">FLBM1003</option>
-                <option value="4">FLBM1004</option>
-              </select>
+                <select lay-verify="required" name="empNo" id="empNo">
+
+                </select>
 		      	</td>
 		    </tr>
 
 		    <tr>
 		      	<td colspan="4">
-					<button class="layui-btn" style="background: #1da02b;">确定</button>
-					<button type="button" class="layui-btn layui-btn-primary">取消</button>
+					<button class="layui-btn" style="background: #1da02b;" lay-filter="add" lay-submit="">确定</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="closePage">取消</button>
 		      	</td>
 		    </tr>
 	  	</tbody>
 	</table>
 	</form>
 	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
-	<script type="text/javascript" src="../../../statics/layui/layui.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
 	<script type="text/javascript">
-
-        //加载'form'模块，使checkbox、select、radio初始化
-        layui.use('form', function(){
-
+        //返回
+        $("#closePage").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
         });
 
-    </script>
+        layui.use(['form', 'layedit','layer','laydate'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer
+                ,laydate =layui.laydate;
+            //添加单位
+            $.ajax({
+				type:'post',
+				url:'/queryAllUnits',
+				async:false,
+				success:function (data) {
+                    var obj=$.parseJSON(data);
+					for (var i =0;i<obj.length;i++){
+                        //alert(data[i].name);
+                        $("#name").append("<option value="+obj[i].id+">"+obj[i].name+"</option>");
+                        form.render();
+					}
+                }
+            });
+            //单位下的员工号
+            form.on('select(name)', function(data){
+                $("#empNo").empty();
+                $.ajax({
+                    type:'post',
+                    url:'/queryEmpbyUid',
+					data:{'empUnit':data.value},
+                    async:false,
+                    success:function (data) {
+                        var obj=$.parseJSON(data);
+                        for (var i =0;i<obj.length;i++){
+                            $("#empNo").append("<option value=\"\"></option>");
+                            $("#empNo").append("<option value="+obj[i].empNo+">"+obj[i].empNo+"</option>");
+                            form.render();
+                        }
+                    }
+                });
+
+            });
+
+            //监听提交
+            form.on('submit(add)', function(data){
+                var id = $("#id").val();
+                var name = $("#name").val();
+                var empNo = $("#empNo").val();
+                layer.alert("分配成功！", {icon: 6},function () {
+                    $.ajax({
+                        type:'post',
+                        data:{'id':id,'name':name,'empNo':empNo},
+                        url:'/addManuSchedu',
+                        success:function (mesgs) {
+                            if ("a" != mesgs) {
+                                alert(mesgs);
+                            }
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.location.reload(); //刷新父页面
+                            //关闭当前frame
+                            parent.layer.close(index);
+                        }
+                    })
+                });
+                return false;
+            });
+        });
+
+
+
+	</script>
 </body>
 </html>

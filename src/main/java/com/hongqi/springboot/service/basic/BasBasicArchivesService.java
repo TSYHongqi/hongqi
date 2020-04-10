@@ -10,8 +10,8 @@
  */
 package com.hongqi.springboot.service.basic;
 
-import com.hongqi.springboot.model.BasBasiCarchiveSentry;
-import com.hongqi.springboot.model.BasBasiCarchives;
+import com.hongqi.springboot.model.BasBasicArchiveSentry;
+import com.hongqi.springboot.model.BasBasicArchives;
 
 import java.util.List;
 
@@ -28,12 +28,37 @@ public interface BasBasicArchivesService {
      *查询所有档案
      * @return
      */
-    List<BasBasiCarchives> findAll(int id,String empName,String name, String operationTime);
+    List<BasBasicArchives> findAll(int id, String empName, String name, String operationTime);
 
     /**
      * 查询详细档案列表
      */
-    List<BasBasiCarchiveSentry> findAllList(int id);
+    List<BasBasicArchiveSentry> findAllList(int id);
+    /**
+     * 新增基础档案
+     */
+    void addBasicArch(BasBasicArchives basBasicArchives);
 
+    /**
+     * 修改基础档案
+     */
+    void updBasicArch(BasBasicArchives basBasicArchives);
 
+    /**
+     * 根据id查询
+     */
+    BasBasicArchives queryBasArchById(Integer id);
+    //新增档案
+    void addBasicArchSentry(BasBasicArchiveSentry basBasicArchiveSentry);
+
+    //修改档案
+    void updBasicArchSentry(BasBasicArchiveSentry basBasicArchiveSentry);
+
+    //根据id查询档案
+    BasBasicArchiveSentry queryBasArSenById(Integer id);
+
+    /**
+     * 作废
+     */
+    void delBasArSenById(Integer id);
 }

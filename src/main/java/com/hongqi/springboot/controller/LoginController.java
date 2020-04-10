@@ -13,26 +13,18 @@ package com.hongqi.springboot.controller;
 import com.hongqi.springboot.model.SyEmp;
 import com.hongqi.springboot.model.SyMemus;
 import com.hongqi.springboot.service.LoginService;
-import com.sun.deploy.net.HttpResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Set;
-
-import static java.awt.SystemColor.menu;
 
 /**
  * 〈一句话功能简述〉<br> 
@@ -44,14 +36,15 @@ import static java.awt.SystemColor.menu;
  */
 @Controller
 public class LoginController {
+
     @Autowired
     private LoginService loginService;
 
-    @RequestMapping("/login")
+    /*@RequestMapping({"/login","/"})
     public String get(){
         return "/pages/login";
     }
-
+*/
     @RequestMapping("/doLogin")
     public String doLogin(SyEmp emp) {
 
@@ -72,7 +65,7 @@ public class LoginController {
             subject.login(token);
             System.out.println("认证成功:" + subject.isAuthenticated());
 
-            return "/pages/main";
+            return "redirect:/main.html";
 
         } catch (AuthenticationException e) {
             /*
@@ -93,8 +86,9 @@ public class LoginController {
 
     @RequestMapping("/getMenu")
     @ResponseBody
-    public String getMenu(){
-        List<SyMemus> oneMenu = loginService.getOneMenu();
+    public String getMenu(HttpSession session){
+        SyEmp emp = (SyEmp)session.getAttribute("emp");
+        List<SyMemus> oneMenu = loginService.getOneMenu(emp.getEmpNo());
         String str ="[";
         for (SyMemus syMemus : oneMenu) {
             str+="{" +
@@ -103,7 +97,7 @@ public class LoginController {
                     "isCurrent:"+syMemus.isCurrent()+"," +
                     "menu:[" ;
             Integer id = syMemus.getId();
-            List<SyMemus> towMenu = loginService.getTowMenu(id);
+            List<SyMemus> towMenu = loginService.getTowMenu(id,emp.getEmpNo());
 
             for(SyMemus memus:towMenu){
                             str+="{" +
@@ -113,7 +107,7 @@ public class LoginController {
                                     "isCurrent: "+memus.isCurrent()+"," +
                                     "children: [";
                             Integer id1 = memus.getId();
-                            List<SyMemus> threeMenu = loginService.getThreeMenu(id1);
+                            List<SyMemus> threeMenu = loginService.getThreeMenu(id1,emp.getEmpNo());
                                      for(SyMemus threeMenus:threeMenu){
                                         str +="{" +
                                                 "title:'"+threeMenus.getText()+"'," +

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>收派标准</title>
+	<link rel="stylesheet" type="text/css" href="../../../statics/newlayui/layui/css/layui.css">
+</head> 
+<body>
+	<form class="layui-form">
+	<table class="layui-table" style="width: 98%;margin: 1px auto;text-align: center;">
+	  	<tbody>
+		    <tr>
+				<td class="layui-bg-gray">产品时限</td>
+				<td>
+					<input type="hidden" id="id" name="id" th:value="${session.id}"/>
+					<input type="text" disabled lay-verify="required" name="productTime" id="productTime"  autocomplete="off" class="layui-input" value="">
+				</td>
+				<td class="layui-bg-gray">产品</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="production" id="production" autocomplete="off" class="layui-input" value="">
+				</td>
+
+		    </tr>
+			<tr>
+				<td class="layui-bg-gray">客户单号</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="customCode" id="customCode"  autocomplete="off" class="layui-input" value="">
+				</td>
+				<td class="layui-bg-gray">工作单号</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="workSheetNo" id="workSheetNo" autocomplete="off" class="layui-input" value="">
+				</td>
+			</tr>
+			<tr>
+				<td class="layui-bg-gray">到达地编码</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="simpleCode" id="simpleCode"  autocomplete="off" class="layui-input" value="">
+				</td>
+				<td class="layui-bg-gray">到达地</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="arriveCity" id="arriveCity" autocomplete="off" class="layui-input" value="">
+				</td>
+			</tr>
+			<tr>
+				<td class="layui-bg-gray">取件地址</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="pickupAddress" id="pickupAddress"  autocomplete="off" class="layui-input" value="">
+				</td>
+				<td class="layui-bg-gray">业务通知单号</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="businessNoticeNo" id="businessNoticeNo" autocomplete="off" class="layui-input" value="">
+				</td>
+
+			</tr>
+			<tr>
+				<td class="layui-bg-gray">取货人</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="linkman" id="linkman"  autocomplete="off" class="layui-input" value="">
+				</td>
+				<td class="layui-bg-gray">寄件人</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="customName" id="customName" autocomplete="off" class="layui-input" value="">
+				</td>
+
+			</tr>
+			<tr>
+				<td class="layui-bg-gray">收件人</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="sendMan" id="sendMan"  autocomplete="off" class="layui-input" value="">
+				</td>
+				<td class="layui-bg-gray">取货时间</td>
+				<td>
+					<input type="text" disabled lay-verify="required" name="reservationTime" id="reservationTime" autocomplete="off" class="layui-input" value="">
+				</td>
+
+			</tr>
+		    <tr>
+		      	<td colspan="4">
+					<button class="layui-btn" style="background: #1da02b;" lay-filter="upd" lay-submit="" id="closePage">关闭</button>
+		      	</td>
+		    </tr>
+	  	</tbody>
+	</table>
+	</form>
+	<script type="text/javascript" src="../../../statics/custom/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../statics/newlayui/layui/layui.js"></script>
+	<script type="text/javascript">
+        //返回
+        $("#closePage").click(function(){
+            var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+            parent.layer.close(index);//关闭弹出的子页面窗口
+        });
+
+        layui.use(['form', 'layedit','layer'], function(){
+            $ = layui.jquery;
+            var form = layui.form
+                ,layer = layui.layer;
+           /* form.on("radio(invalidateSign)", function (data) {
+                var ins = data.value;
+                alert(ins);
+            });*/
+           var id = $("#id").val();
+           $.ajax({
+			   type:'post',
+			   data:{'id':id},
+			   url:'/queryAccWorShById',
+			   success:function (data) {
+                   //alert(data);
+                   var obj=$.parseJSON(data);
+                   $("#productTime").val(obj.productTime);
+                   $("#production").val(obj.production);
+                   $("#customCode").val(obj.customCode);
+                   $("#workSheetNo").val(obj.workSheetNo);
+                   $("#simpleCode").val(obj.simpleCode);
+                   $("#arriveCity").val(obj.arriveCity);
+                   $("#pickupAddress").val(obj.pickupAddress);
+                   $("#businessNoticeNo").val(obj.businessNoticeNo);
+                   $("#linkman").val(obj.linkman);
+                   $("#customName").val(obj.customName);
+                   $("#sendMan").val(obj.sendMan);
+                   $("#reservationTime").val(obj.reservationTime);
+               }
+
+		   });
+
+
+
+        });
+
+
+
+
+	</script>
+</body> 
+</html>
+    
+

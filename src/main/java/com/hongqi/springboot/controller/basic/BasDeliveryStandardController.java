@@ -117,7 +117,6 @@ public class BasDeliveryStandardController {
     public String queryById(@PathVariable("id") String id){
         BasDeliveryStandard basDeliveryStandard = basDeliveryStandardService.queryById(Integer.parseInt(id));
         String jsonString = JSON.toJSONString(basDeliveryStandard);
-        System.out.println("queryById"+jsonString);
         return jsonString;
     }
     /**
@@ -125,7 +124,6 @@ public class BasDeliveryStandardController {
      */
     @RequestMapping("/update")
     public String update(BasDeliveryStandard basDeliveryStandard){
-        System.out.println("basDeliveryStandard"+basDeliveryStandard);
         basDeliveryStandardService.updateStandards(basDeliveryStandard);
         return "/pages/basicData/deliveryStandard";
     }
@@ -176,6 +174,7 @@ public class BasDeliveryStandardController {
         basDeliveryStandardService.addStandards(basDeliveryStandard);
         return "/pages/basicData/deliveryStandard";
      }
+
 
 
 

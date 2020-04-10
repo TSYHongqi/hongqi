@@ -64,16 +64,13 @@ spring:
 
 
 
-
-
-
   #数据源
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
-    password: 1234
+    password: Family@1314
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/hongqi
+    url: jdbc:mysql://47.96.144.120:3306/hongqi
 
     #Druid连接池配置
     druid:
